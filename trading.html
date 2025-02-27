@@ -350,6 +350,118 @@
             background: var(--neon-purple);
             border-radius: 4px;
         }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .container {
+                margin-right: 0;
+                padding: 15px;
+                margin-top: 160px;
+            }
+
+            .breaking-news-header {
+                height: auto;
+                padding: 10px;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .header-left {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .header-center {
+                position: static;
+                transform: none;
+                min-width: unset;
+                width: 100%;
+            }
+
+            .nav-buttons {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .nav-button {
+                min-width: 100px;
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+
+            .header-right {
+                width: 100%;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .market-timer {
+                width: 100%;
+                min-width: unset;
+            }
+
+            .social-button {
+                width: 100%;
+            }
+
+            .navbar {
+                position: relative;
+                top: 0;
+                width: 100%;
+                height: auto;
+                border-left: none;
+                border-bottom: 2px solid var(--neon-purple);
+            }
+
+            .pairs-container {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 10px;
+            }
+
+            .pair-widget {
+                height: 180px;
+            }
+
+            .trading-grid {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .trading-widget {
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+                margin-top: 140px;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .nav-button {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .countdown {
+                justify-content: center;
+            }
+
+            .pairs-container {
+                grid-template-columns: 1fr;
+            }
+
+            .trading-widget {
+                height: 300px;
+            }
+        }
     </style>
 </head>
 

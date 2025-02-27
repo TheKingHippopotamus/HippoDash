@@ -427,6 +427,126 @@
             font-size: 12px;
             color: #fff;
         }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .container {
+                margin-right: 0;
+                padding: 15px;
+                margin-top: 160px;
+            }
+
+            .breaking-news-header {
+                height: auto;
+                padding: 10px;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .header-left {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .header-center {
+                position: static;
+                transform: none;
+                min-width: unset;
+                width: 100%;
+            }
+
+            .nav-buttons {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .nav-button {
+                min-width: 100px;
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+
+            .header-right {
+                width: 100%;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .market-timer {
+                width: 100%;
+                min-width: unset;
+            }
+
+            .social-button {
+                width: 100%;
+            }
+
+            .navbar {
+                position: relative;
+                top: 0;
+                width: 100%;
+                height: auto;
+                border-left: none;
+                border-bottom: 2px solid var(--neon-purple);
+            }
+
+            .sidebar-widgets {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 10px;
+            }
+
+            .widget-container {
+                height: 180px;
+            }
+
+            .news-widget.calendar {
+                width: 100%;
+                margin-right: 0;
+                height: 500px;
+            }
+
+            .main-title {
+                font-size: 32px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+                margin-top: 140px;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .nav-button {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .countdown {
+                justify-content: center;
+            }
+
+            .sidebar-widgets {
+                grid-template-columns: 1fr;
+            }
+
+            .news-widget.calendar {
+                height: 400px;
+            }
+
+            .main-title {
+                font-size: 28px;
+            }
+        }
     </style>
 </head>
 <body>
