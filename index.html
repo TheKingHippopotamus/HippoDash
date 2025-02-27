@@ -622,46 +622,51 @@
     <script src="https://www.youtube.com/iframe_api"></script>
 
     <script>
+        // Initialize players array
         let players = [];
+        let apiLoaded = false;
 
+        // Load YouTube API
+        function loadYouTubeAPI() {
+            const tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            const firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        }
+
+        // Called automatically by YouTube API when it's ready
         function onYouTubeIframeAPIReady() {
-            // יצירת נגן לכל סרטון
-            document.querySelectorAll('.video-container iframe').forEach((iframe, index) => {
-                const videoId = iframe.src.split('/embed/')[1].split('?')[0];
-                players[index] = new YT.Player('player' + index, {
+            apiLoaded = true;
+            console.log('YouTube API loaded');
+            initializePlayers();
+        }
+
+        function initializePlayers() {
+            if (!apiLoaded) {
+                console.warn('YouTube API not loaded yet');
+                return;
+            }
+
+            const videoContainers = document.querySelectorAll('.video-container');
+            videoContainers.forEach((container, index) => {
+                const iframe = container.querySelector('iframe');
+                if (!iframe) return;
+
+                // Extract video ID from iframe src
+                const videoId = iframe.src.split('/').pop().split('?')[0];
+                
+                // Create new player
+                players[index] = new YT.Player(iframe, {
                     videoId: videoId,
-                    playerVars: {
-                        'enablejsapi': 1,
-                        'origin': window.location.origin,
-                        'controls': 0,
-                        'disablekb': 1,
-                        'modestbranding': 1,
-                        'rel': 0,
-                        'showinfo': 0,
-                        'fs': 0,
-                        'playsinline': 1,
-                        'quality': 'hd1080',
-                        'mute': 1 // הוספת השתקה כברירת מחדל
-                    },
                     events: {
-                        'onReady': function(event) {
-                            console.log('Player ' + index + ' is ready');
-                            event.target.setPlaybackQuality('hd1080');
-                            // הפעלת הסרטון באופן אוטומטי
+                        'onReady': (event) => {
+                            console.log(`Player ${index} ready`);
                             event.target.playVideo();
-                            // עדכון מצב הכפתורים
-                            const playButton = document.querySelectorAll('.toggle-btn.play')[index];
-                            const volumeButton = document.querySelectorAll('.toggle-btn.volume')[index];
-                            playButton.classList.add('muted');
-                            volumeButton.classList.add('muted');
+                            event.target.mute();
                         },
-                        'onStateChange': function(event) {
-                            console.log('Player ' + index + ' state changed to: ' + event.data);
-                            updateButtonState(index, event.data);
-                        },
-                        'onPlaybackQualityChange': function(event) {
-                            if (event.data !== 'hd1080') {
-                                event.target.setPlaybackQuality('hd1080');
+                        'onStateChange': (event) => {
+                            if (event.data === YT.PlayerState.ENDED) {
+                                event.target.playVideo();
                             }
                         }
                     }
@@ -669,76 +674,80 @@
             });
         }
 
-        function updateButtonState(index, state) {
-            const playButton = document.querySelectorAll('.toggle-btn.play')[index];
-            if (state === YT.PlayerState.PLAYING) {
-                playButton.classList.add('muted');
-            } else {
-                playButton.classList.remove('muted');
-            }
-        }
-
         function toggleVideo(index) {
-            if (players[index] && players[index].getPlayerState) {
-                try {
-                    const state = players[index].getPlayerState();
-                    const button = document.querySelectorAll('.toggle-btn.play')[index];
-                    const videoContainer = document.querySelectorAll('.video-container')[index];
-
-                    if (state === YT.PlayerState.PLAYING) {
-                        players[index].pauseVideo();
-                        button.classList.remove('muted');
-                    } else {
-                        players[index].playVideo();
-                        button.classList.add('muted');
-                        videoContainer.classList.add('active');
-                        
-                        setTimeout(() => {
-                            videoContainer.classList.remove('active');
-                        }, 3000);
-                    }
-                } catch (error) {
-                    console.error('Error toggling video:', error);
-                }
-            } else {
+            if (!players[index] || !players[index].getPlayerState) {
                 console.warn('Player not ready:', index);
+                return;
+            }
+
+            try {
+                const state = players[index].getPlayerState();
+                const button = document.querySelectorAll('.toggle-btn.play')[index];
+                const videoContainer = document.querySelectorAll('.video-container')[index];
+
+                if (state === YT.PlayerState.PLAYING) {
+                    players[index].pauseVideo();
+                    button.classList.remove('muted');
+                } else {
+                    players[index].playVideo();
+                    button.classList.add('muted');
+                    videoContainer.classList.add('active');
+                    
+                    setTimeout(() => {
+                        videoContainer.classList.remove('active');
+                    }, 3000);
+                }
+            } catch (error) {
+                console.error('Error toggling video:', error);
             }
         }
 
         function toggleVolume(index) {
-            if (players[index]) {
-                try {
-                    const volumeButton = document.querySelectorAll('.toggle-btn.volume')[index];
-                    
-                    if (players[index].isMuted()) {
-                        players[index].unMute();
-                        volumeButton.classList.remove('muted');
-                    } else {
-                        players[index].mute();
-                        volumeButton.classList.add('muted');
-                    }
-                } catch (error) {
-                    console.error('Error toggling volume:', error);
-                }
-            } else {
+            if (!players[index]) {
                 console.warn('Player not ready:', index);
+                return;
+            }
+
+            try {
+                const volumeButton = document.querySelectorAll('.toggle-btn.volume')[index];
+                
+                if (players[index].isMuted()) {
+                    players[index].unMute();
+                    volumeButton.classList.remove('muted');
+                } else {
+                    players[index].mute();
+                    volumeButton.classList.add('muted');
+                }
+            } catch (error) {
+                console.error('Error toggling volume:', error);
             }
         }
 
-        // הוספת פונקציה לבדיקה שכל הסרטונים ממשיכים לרוץ
+        // Check and restart videos every 5 seconds
         function checkAndRestartVideos() {
             players.forEach((player, index) => {
                 if (player && player.getPlayerState) {
-                    const state = player.getPlayerState();
-                    if (state === YT.PlayerState.ENDED) {
-                        player.playVideo();
+                    try {
+                        const state = player.getPlayerState();
+                        if (state === YT.PlayerState.ENDED) {
+                            player.playVideo();
+                        }
+                    } catch (error) {
+                        console.warn(`Error checking video ${index}:`, error);
                     }
                 }
             });
         }
 
-        // בדיקה כל 5 שניות שהסרטונים רצים
-        setInterval(checkAndRestartVideos, 5000);
+        // Start checking videos only after API is loaded
+        let checkInterval = null;
+        function startVideoCheck() {
+            if (checkInterval) return;
+            checkInterval = setInterval(checkAndRestartVideos, 5000);
+        }
+
+        // Load YouTube API when page loads
+        document.addEventListener('DOMContentLoaded', loadYouTubeAPI);
     </script>
 </body>
 </html>
