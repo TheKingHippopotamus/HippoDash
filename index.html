@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>קטגוריות וידאו</title>
+    <title>Hippopotamus Dashboard</title>
     <style>
         :root {
             --dark-bg: #0a0a0a;
@@ -28,7 +28,7 @@
 
         .videos-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 25px;
             margin-bottom: 40px;
         }
@@ -42,6 +42,17 @@
             background: var(--card-bg);
         }
 
+        .video-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2;
+            cursor: not-allowed;
+        }
+
         .video-container iframe {
             position: absolute;
             top: 0;
@@ -49,11 +60,12 @@
             width: 100%;
             height: 100%;
             border: none;
+            pointer-events: none;
         }
 
         @media (max-width: 768px) {
             .videos-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: 1fr;
             }
         }
 
@@ -348,6 +360,89 @@
             transform: translate(-50%, -50%);
             font-size: 10px;
         }
+
+        /* הוספת פונט חדש */
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&display=swap');
+
+        /* סגנונות לכותרת ראשית */
+        .breaking-news-header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 40px;
+            border-bottom: 2px solid rgba(157, 0, 255, 0.3);
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 900;
+            color: white;
+            margin: 0;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 4px rgba(157, 0, 255, 0.3);
+        }
+
+        .subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            color: #888;
+            margin-top: 10px;
+            font-style: italic;
+            letter-spacing: 1px;
+        }
+
+        .news-date {
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 14px;
+            color: var(--neon-purple);
+            margin-top: 15px;
+            letter-spacing: 2px;
+        }
+
+        /* עדכון המרווח העליון של הקונטיינר */
+        .container {
+            margin-top: 20px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 15px 0;
+            width: 100%;
+        }
+
+        .nav-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(157, 0, 255, 0.3);
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: rgba(157, 0, 255, 0.2);
+            border-color: var(--neon-purple);
+            transform: translateY(-2px);
+        }
+
+        .nav-button.active {
+            background: var(--neon-purple);
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(157, 0, 255, 0.4);
+        }
+
+        .nav-button span {
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -355,106 +450,95 @@
         <div class="sidebar-header">
             <img src="./static/hippo Small.jpeg" alt="Hippopotamus Logo" class="logo">
             <h1 class="dashboard-title">Hippopotamus<br>Dashboard</h1>
+            <div class="nav-buttons">
+                <a href="index.html" class="nav-button active">
+                    <span>📺</span>
+                    News Feed
+                </a>
+                <a href="trading.html" class="nav-button">
+                    <span>📊</span>
+                    Trading
+                </a>
+            </div>
             <a href="https://x.com/LmlyhNyr" target="_blank" class="social-button">
                 <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJ3aGl0ZSIgZD0iTTE4LjI0NCA1LjIyOGMuMTk1LS4xOTUuNTEyLS4xOTUuNzA3IDBsNy4wNzEgNy4wNzFjLjE5NS4xOTUuMTk1LjUxMiAwIC43MDdsLTcuMDcxIDcuMDcxYy0uMTk1LjE5NS0uNTEyLjE5NS0uNzA3IDAtLjE5NS0uMTk1LS4xOTUtLjUxMiAwLS43MDdMNjguMjkzIDEyIDYxLjIyMiA0LjkyOWMtLjE5NS0uMTk1LS4xOTUtLjUxMiAwLS43MDd6Ii8+PC9zdmc+" alt="X Logo">
                 @LmlyhNyr
             </a>
         </div>
-        <!-- כל הכפתורים בטור אחד -->
         <div class="video-controls-group">
             <img class="video-thumbnail" src="https://img.youtube.com/vi/xLep9rUAvaI/default.jpg" alt="Video 1">
             <div class="buttons-container">
-                <button class="toggle-btn play" 
-                        onclick="toggleVideo(0)" 
-                        data-tooltip="הפעלה/עצירת סרטון"></button>
-                <button class="toggle-btn volume" 
-                        onclick="toggleVolume(0)" 
-                        data-tooltip="השתקה/הפעלת סאונד"></button>
+                <button class="toggle-btn play" onclick="toggleVideo(0)" data-tooltip="הפעלה/עצירת סרטון"></button>
+                <button class="toggle-btn volume" onclick="toggleVolume(0)" data-tooltip="השתקה/הפעלת סאונד"></button>
             </div>
         </div>
-
         <div class="video-controls-group">
-            <img class="video-thumbnail" src="https://img.youtube.com/vi/8uB63LT3gcI/default.jpg" alt="Video 2">
+            <img class="video-thumbnail" src="https://img.youtube.com/vi/9NyxcX3rhQs/default.jpg" alt="Video 2">
             <div class="buttons-container">
-                <button class="toggle-btn play" onclick="toggleVideo(1)" title="Play/Stop"></button>
-                <button class="toggle-btn volume" onclick="toggleVolume(1)" title="Mute/Unmute"></button>
+                <button class="toggle-btn play" onclick="toggleVideo(1)" data-tooltip="הפעלה/עצירת סרטון"></button>
+                <button class="toggle-btn volume" onclick="toggleVolume(1)" data-tooltip="השתקה/הפעלת סאונד"></button>
             </div>
         </div>
-
         <div class="video-controls-group">
-            <img class="video-thumbnail" src="https://img.youtube.com/vi/iEpJwprxDdk/default.jpg" alt="Video 3">
+            <img class="video-thumbnail" src="https://img.youtube.com/vi/IpMF1dFdO0A/default.jpg" alt="Video 4">
             <div class="buttons-container">
-                <button class="toggle-btn play" onclick="toggleVideo(2)" title="Play/Stop"></button>
-                <button class="toggle-btn volume" onclick="toggleVolume(2)" title="Mute/Unmute"></button>
+                <button class="toggle-btn play" onclick="toggleVideo(2)" data-tooltip="הפעלה/עצירת סרטון"></button>
+                <button class="toggle-btn volume" onclick="toggleVolume(2)" data-tooltip="השתקה/הפעלת סאונד"></button>
             </div>
         </div>
-
-        <div class="video-controls-group">
-            <img class="video-thumbnail" src="https://img.youtube.com/vi/tlVMZPq_D2U/default.jpg" alt="Video 4">
-            <div class="buttons-container">
-                <button class="toggle-btn play" onclick="toggleVideo(3)" title="Play/Stop"></button>
-                <button class="toggle-btn volume" onclick="toggleVolume(3)" title="Mute/Unmute"></button>
-            </div>
-        </div>
-
         <div class="video-controls-group">
             <img class="video-thumbnail" src="https://img.youtube.com/vi/f39oHo6vFLg/default.jpg" alt="Video 5">
             <div class="buttons-container">
-                <button class="toggle-btn play" onclick="toggleVideo(4)" title="Play/Stop"></button>
-                <button class="toggle-btn volume" onclick="toggleVolume(4)" title="Mute/Unmute"></button>
+                <button class="toggle-btn play" onclick="toggleVideo(3)" data-tooltip="הפעלה/עצירת סרטון"></button>
+                <button class="toggle-btn volume" onclick="toggleVolume(3)" data-tooltip="השתקה/הפעלת סאונד"></button>
             </div>
         </div>
-
         <div class="video-controls-group">
             <img class="video-thumbnail" src="https://img.youtube.com/vi/EK76hBAOMEk/default.jpg" alt="Video 6">
             <div class="buttons-container">
-                <button class="toggle-btn play" onclick="toggleVideo(5)" title="Play/Stop"></button>
-                <button class="toggle-btn volume" onclick="toggleVolume(5)" title="Mute/Unmute"></button>
+                <button class="toggle-btn play" onclick="toggleVideo(4)" data-tooltip="הפעלה/עצירת סרטון"></button>
+                <button class="toggle-btn volume" onclick="toggleVolume(4)" data-tooltip="השתקה/הפעלת סאונד"></button>
             </div>
         </div>
-
         <div class="video-controls-group">
             <img class="video-thumbnail" src="https://img.youtube.com/vi/OlUMDZchivQ/default.jpg" alt="Video 7">
             <div class="buttons-container">
-                <button class="toggle-btn play" onclick="toggleVideo(6)" title="Play/Stop"></button>
-                <button class="toggle-btn volume" onclick="toggleVolume(6)" title="Mute/Unmute"></button>
+                <button class="toggle-btn play" onclick="toggleVideo(5)" data-tooltip="הפעלה/עצירת סרטון"></button>
+                <button class="toggle-btn volume" onclick="toggleVolume(5)" data-tooltip="השתקה/הפעלת סאונד"></button>
             </div>
         </div>
-
         <div class="video-controls-group">
-            <img class="video-thumbnail" src="https://img.youtube.com/vi/WiU-gqFyIwU/default.jpg" alt="Video 8">
+            <img class="video-thumbnail" src="https://img.youtube.com/vi/CG2XDTgvZPo/default.jpg" alt="Video 8">
             <div class="buttons-container">
-                <button class="toggle-btn play" onclick="toggleVideo(7)" title="Play/Stop"></button>
-                <button class="toggle-btn volume" onclick="toggleVolume(7)" title="Mute/Unmute"></button>
+                <button class="toggle-btn play" onclick="toggleVideo(6)" data-tooltip="הפעלה/עצירת סרטון"></button>
+                <button class="toggle-btn volume" onclick="toggleVolume(6)" data-tooltip="השתקה/הפעלת סאונד"></button>
             </div>
         </div>
-
         <div class="video-controls-group">
-            <img class="video-thumbnail" src="https://img.youtube.com/vi/m8A_dpIJjEU/default.jpg" alt="Video 9">
+            <img class="video-thumbnail" src="https://img.youtube.com/vi/pykpO5kQJ98/default.jpg" alt="Video 9">
             <div class="buttons-container">
-                <button class="toggle-btn play" onclick="toggleVideo(8)" title="Play/Stop"></button>
-                <button class="toggle-btn volume" onclick="toggleVolume(8)" title="Mute/Unmute"></button>
-            </div>
-        </div>
-
-        <div class="video-controls-group">
-            <img class="video-thumbnail" src="https://img.youtube.com/vi/TDjlT4B8W2M/default.jpg" alt="Video 10">
-            <div class="buttons-container">
-                <button class="toggle-btn play" onclick="toggleVideo(9)" title="Play/Stop"></button>
-                <button class="toggle-btn volume" onclick="toggleVolume(9)" title="Mute/Unmute"></button>
-            </div>
-        </div>
-
-        <div class="video-controls-group">
-            <img class="video-thumbnail" src="https://img.youtube.com/vi/NT2UJeBuaN4/default.jpg" alt="Video 11">
-            <div class="buttons-container">
-                <button class="toggle-btn play" onclick="toggleVideo(10)" title="Play/Stop"></button>
-                <button class="toggle-btn volume" onclick="toggleVolume(10)" title="Mute/Unmute"></button>
+                <button class="toggle-btn play" onclick="toggleVideo(7)" data-tooltip="הפעלה/עצירת סרטון"></button>
+                <button class="toggle-btn volume" onclick="toggleVolume(7)" data-tooltip="השתקה/הפעלת סאונד"></button>
             </div>
         </div>
     </div>
 
     <div class="container">
+        <div class="breaking-news-header">
+            <h1 class="main-title">Breaking News</h1>
+            <p class="subtitle">Live Coverage of Global Events</p>
+            <div class="news-date">
+                <script>
+                    const date = new Date();
+                    document.write(date.toLocaleDateString('en-US', { 
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    }));
+                </script>
+            </div>
+        </div>
         <div class="videos-grid">
             <div class="video-container">
                 <iframe 
@@ -468,16 +552,17 @@
             <div class="video-container">
                 <iframe 
                     id="player1"
-                    src="https://www.youtube.com/embed/8uB63LT3gcI?enablejsapi=1"
+                    src="https://www.youtube.com/embed/9NyxcX3rhQs?enablejsapi=1"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
                     allowfullscreen>
                 </iframe>
             </div>
             <div class="video-container">
                 <iframe 
                     id="player2"
-                    src="https://www.youtube.com/embed/iEpJwprxDdk?enablejsapi=1"
+                    src="https://www.youtube.com/embed/IpMF1dFdO0A?enablejsapi=1"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowfullscreen>
@@ -486,15 +571,6 @@
             <div class="video-container">
                 <iframe 
                     id="player3"
-                    src="https://www.youtube.com/embed/tlVMZPq_D2U?enablejsapi=1"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen>
-                </iframe>
-            </div>
-            <div class="video-container">
-                <iframe 
-                    id="player4"
                     src="https://www.youtube.com/embed/f39oHo6vFLg?enablejsapi=1"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -503,7 +579,7 @@
             </div>
             <div class="video-container">
                 <iframe 
-                    id="player5"
+                    id="player4"
                     src="https://www.youtube.com/embed/EK76hBAOMEk?enablejsapi=1"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -512,7 +588,7 @@
             </div>
             <div class="video-container">
                 <iframe 
-                    id="player6"
+                    id="player5"
                     src="https://www.youtube.com/embed/OlUMDZchivQ?enablejsapi=1"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -521,37 +597,21 @@
             </div>
             <div class="video-container">
                 <iframe 
+                    id="player6"
+                    src="https://www.youtube.com/embed/CG2XDTgvZPo?enablejsapi=1"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen>
+                </iframe>
+            </div>
+            <div class="video-container">
+                <iframe 
                     id="player7"
-                    src="https://www.youtube.com/embed/WiU-gqFyIwU?enablejsapi=1"
+                    src="https://www.youtube.com/embed/pykpO5kQJ98?enablejsapi=1"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen>
-                </iframe>
-            </div>
-            <div class="video-container">
-                <iframe 
-                    id="player8"
-                    src="https://www.youtube.com/embed/m8A_dpIJjEU?enablejsapi=1"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen>
-                </iframe>
-            </div>
-            <div class="video-container">
-                <iframe 
-                    id="player9"
-                    src="https://www.youtube.com/embed/TDjlT4B8W2M?enablejsapi=1"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen>
-                </iframe>
-            </div>
-            <div class="video-container">
-                <iframe 
-                    id="player10"
-                    src="https://www.youtube.com/embed/NT2UJeBuaN4?enablejsapi=1"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
                     allowfullscreen>
                 </iframe>
             </div>
@@ -572,15 +632,37 @@
                     videoId: videoId,
                     playerVars: {
                         'enablejsapi': 1,
-                        'origin': window.location.origin
+                        'origin': window.location.origin,
+                        'controls': 0,
+                        'disablekb': 1,
+                        'modestbranding': 1,
+                        'rel': 0,
+                        'showinfo': 0,
+                        'fs': 0,
+                        'playsinline': 1,
+                        'quality': 'hd1080',
+                        'mute': 1 // הוספת השתקה כברירת מחדל
                     },
                     events: {
                         'onReady': function(event) {
                             console.log('Player ' + index + ' is ready');
+                            event.target.setPlaybackQuality('hd1080');
+                            // הפעלת הסרטון באופן אוטומטי
+                            event.target.playVideo();
+                            // עדכון מצב הכפתורים
+                            const playButton = document.querySelectorAll('.toggle-btn.play')[index];
+                            const volumeButton = document.querySelectorAll('.toggle-btn.volume')[index];
+                            playButton.classList.add('muted');
+                            volumeButton.classList.add('muted');
                         },
                         'onStateChange': function(event) {
                             console.log('Player ' + index + ' state changed to: ' + event.data);
                             updateButtonState(index, event.data);
+                        },
+                        'onPlaybackQualityChange': function(event) {
+                            if (event.data !== 'hd1080') {
+                                event.target.setPlaybackQuality('hd1080');
+                            }
                         }
                     }
                 });
@@ -642,6 +724,21 @@
                 console.warn('Player not ready:', index);
             }
         }
+
+        // הוספת פונקציה לבדיקה שכל הסרטונים ממשיכים לרוץ
+        function checkAndRestartVideos() {
+            players.forEach((player, index) => {
+                if (player && player.getPlayerState) {
+                    const state = player.getPlayerState();
+                    if (state === YT.PlayerState.ENDED) {
+                        player.playVideo();
+                    }
+                }
+            });
+        }
+
+        // בדיקה כל 5 שניות שהסרטונים רצים
+        setInterval(checkAndRestartVideos, 5000);
     </script>
 </body>
 </html>

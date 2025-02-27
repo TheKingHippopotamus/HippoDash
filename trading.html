@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- הוספת סקריפט רשמי של TradingView -->
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js"></script>
+    
+    <title>Hippopotamus Trading Dashboard</title>
+    <style>
+        /* הגדרות בסיס */
+        :root {
+            --dark-bg: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --neon-purple: #9d00ff;
+            --neon-blue: #00f3ff;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: var(--dark-bg);
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+            margin-top: 1px;
+            margin-right: 370px;
+        }
+
+        /* סגנונות סיידבר */
+        .navbar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 380px;
+            background: rgba(0, 0, 0, 0.95);
+            border-left: 2px solid var(--neon-purple);
+            overflow-y: auto;
+            padding: 0;
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(157, 0, 255, 0.3);
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .pairs-container {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .pair-widget {
+            background: #000000;
+            border-radius: 10px;
+            border: 1px solid rgba(157, 0, 255, 0.3);
+            padding: 10px;
+            min-height: 180px;
+            overflow: hidden;
+        }
+
+        /* עיצוב הגריד הראשי */
+        .trading-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            padding: 20px;
+        }
+
+        .trading-widget {
+            background: var(--card-bg);
+            border-radius: 15px;
+            border: 1px solid var(--neon-purple);
+            overflow: hidden;
+            min-height: 450px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .trading-widget:hover {
+            box-shadow: 0 0 20px rgba(157, 0, 255, 0.4);
+            transform: translateY(-5px);
+        }
+
+        /* עיצוב כותרת */
+        .breaking-news-header {
+            text-align: center;
+            padding: 1px 0;
+            margin-top: -50px;
+            border-bottom: 2px solid rgba(157, 0, 255, 0.3);
+            background: linear-gradient(180deg, rgba(157, 0, 255, 0.1), transparent);
+        }
+
+        .main-title {
+            font-size: 48px;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(157, 0, 255, 0.5);
+        }
+
+        .subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            color: #888;
+            margin-top: 10px;
+            font-style: italic;
+            letter-spacing: 1px;
+        }
+
+        /* הסתרת קרדיט של TradingView */
+        .tradingview-widget-copyright {
+            display: none !important;
+        }
+
+        /* התאמה למסכים קטנים */
+        @media (max-width: 1400px) {
+            .navbar {
+                width: 300px;
+            }
+            
+            .container {
+                margin-right: 320px;
+            }
+            
+            .pair-widget {
+                height: 120px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                max-height: 50vh;
+            }
+            
+            .container {
+                margin-right: 0;
+                margin-top: 20px;
+            }
+            
+            .pairs-container {
+                height: auto;
+                max-height: 45vh;
+            }
+            
+            .trading-widget {
+                min-height: 350px;
+            }
+        }
+
+        /* עדכון סגנונות הסיידבר */
+        .logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            border: 2px solid var(--neon-purple);
+            box-shadow: 0 0 15px rgba(157, 0, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(157, 0, 255, 0.5);
+        }
+
+        .dashboard-title {
+            color: white;
+            font-size: 14px;
+            text-align: center;
+            margin: 0;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: linear-gradient(45deg, #9d00ff, #00f3ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(157, 0, 255, 0.3);
+        }
+
+        /* סגנון גלילה מותאם */
+        .pairs-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .pairs-container::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+
+        .pairs-container::-webkit-scrollbar-thumb {
+            background: var(--neon-purple);
+            border-radius: 4px;
+        }
+
+        /* עדכון הפרמטרים של הווידג'טים */
+        .tradingview-widget-container {
+            background: #000000;
+            height: 100%;
+            min-height: 160px;
+        }
+
+        .tradingview-widget-container__widget {
+            height: 100% !important;
+        }
+
+        .nav-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 15px 0;
+            width: 100%;
+        }
+
+        .nav-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(157, 0, 255, 0.3);
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: rgba(157, 0, 255, 0.2);
+            border-color: var(--neon-purple);
+            transform: translateY(-2px);
+        }
+
+        .nav-button.active {
+            background: var(--neon-purple);
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(157, 0, 255, 0.4);
+        }
+
+        .nav-button span {
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <!-- עדכון הסיידבר -->
+    <div class="navbar">
+        <div class="sidebar-header">
+            <img src="./static/hippobeat.jpeg" alt="Hippopotamus Logo" class="logo">
+            <h1 class="dashboard-title">Hippopotamus<br>Trading</h1>
+            <div class="nav-buttons">
+                <a href="index.html" class="nav-button">
+                    <span>📺</span>
+                    News Feed
+                </a>
+                <a href="trading.html" class="nav-button active">
+                    <span>📊</span>
+                    Trading
+                </a>
+            </div>
+            <a href="https://x.com/LmlyhNyr" target="_blank" class="social-button">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJ3aGl0ZSIgZD0iTTE4LjI0NCA1LjIyOGMuMTk1LS4xOTUuNTEyLS4xOTUuNzA3IDBsNy4wNzEgNy4wNzFjLjE5NS4xOTUuMTk1LjUxMiAwIC43MDdsLTcuMDcxIDcuMDcxYy0uMTk1LjE5NS0uNTEyLjE5NS0uNzA3IDAtLjE5NS0uMTk1LS4xOTUtLjUxMiAwLS43MDdMNjguMjkzIDEyIDYxLjIyMiA0LjkyOWMtLjE5NS0uMTk1LS4xOTUtLjUxMiAwLS43MDd6Ii8+PC9zdmc+" alt="X Logo">
+                @LmlyhNyr
+            </a>
+        </div>
+        <div class="pairs-container">
+            <!-- EUR/USD -->
+            <div class="pair-widget">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                    {
+                        "symbol": "FX:EURUSD",
+                        "width": 350,
+                        "height": 220,
+                        "locale": "en",
+                        "dateRange": "1M",
+                        "colorTheme": "dark",
+                        "isTransparent": false,
+                        "autosize": false,
+                        "chartOnly": false,
+                        "noTimeScale": false,
+                        "backgroundColor": "rgba(0, 0, 0, 1)",
+                        "gridLineColor": "rgba(42, 46, 57, 0.3)"
+                    }
+                    </script>
+                </div>
+            </div>
+
+            <!-- GBP/USD -->
+            <div class="pair-widget">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                    {
+                        "symbol": "FX:GBPUSD",
+                        "width": 350,
+                        "height": 220,
+                        "locale": "en",
+                        "dateRange": "1M",
+                        "colorTheme": "dark",
+                        "isTransparent": false,
+                        "autosize": false,
+                        "chartOnly": false,
+                        "noTimeScale": false,
+                        "backgroundColor": "rgba(0, 0, 0, 1)",
+                        "gridLineColor": "rgba(42, 46, 57, 0.3)"
+                    }
+                    </script>
+                </div>
+            </div>
+
+            <!-- USD/JPY -->
+            <div class="pair-widget">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                    {
+                        "symbol": "FX:USDJPY",
+                        "width": 350,
+                        "height": 220,
+                        "locale": "en",
+                        "dateRange": "1M",
+                        "colorTheme": "dark",
+                        "isTransparent": false,
+                        "autosize": false,
+                        "chartOnly": false,
+                        "noTimeScale": false,
+                        "backgroundColor": "rgba(0, 0, 0, 1)",
+                        "gridLineColor": "rgba(42, 46, 57, 0.3)"
+                    }
+                    </script>
+                </div>
+            </div>
+
+            <!-- USD/CHF -->
+            <div class="pair-widget">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                    {
+                        "symbol": "FX:USDCHF",
+                        "width": 350,
+                        "height": 220,
+                        "locale": "en",
+                        "dateRange": "1M",
+                        "colorTheme": "dark",
+                        "isTransparent": false,
+                        "autosize": false,
+                        "chartOnly": false,
+                        "noTimeScale": false,
+                        "backgroundColor": "rgba(0, 0, 0, 1)",
+                        "gridLineColor": "rgba(42, 46, 57, 0.3)"
+                    }
+                    </script>
+                </div>
+            </div>
+
+            <!-- AUD/USD -->
+            <div class="pair-widget">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                    {
+                        "symbol": "FX:AUDUSD",
+                        "width": 350,
+                        "height": 220,
+                        "locale": "en",
+                        "dateRange": "1M",
+                        "colorTheme": "dark",
+                        "isTransparent": false,
+                        "autosize": false,
+                        "chartOnly": false,
+                        "noTimeScale": false,
+                        "backgroundColor": "rgba(0, 0, 0, 1)",
+                        "gridLineColor": "rgba(42, 46, 57, 0.3)"
+                    }
+                    </script>
+                </div>
+            </div>
+
+            <!-- USD/CAD -->
+            <div class="pair-widget">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                    {
+                        "symbol": "FX:USDCAD",
+                        "width": 350,
+                        "height": 220,
+                        "locale": "en",
+                        "dateRange": "1M",
+                        "colorTheme": "dark",
+                        "isTransparent": false,
+                        "autosize": false,
+                        "chartOnly": false,
+                        "noTimeScale": false,
+                        "backgroundColor": "rgba(0, 0, 0, 1)",
+                        "gridLineColor": "rgba(42, 46, 57, 0.3)"
+                    }
+                    </script>
+                </div>
+            </div>
+
+            <!-- NZD/USD -->
+            <div class="pair-widget">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                    {
+                        "symbol": "FX:NZDUSD",
+                        "width": 350,
+                        "height": 220,
+                        "locale": "en",
+                        "dateRange": "1M",
+                        "colorTheme": "dark",
+                        "isTransparent": false,
+                        "autosize": false,
+                        "chartOnly": false,
+                        "noTimeScale": false,
+                        "backgroundColor": "rgba(0, 0, 0, 1)",
+                        "gridLineColor": "rgba(42, 46, 57, 0.3)"
+                    }
+                    </script>
+                </div>
+            </div>
+
+            <!-- EUR/GBP -->
+            <div class="pair-widget">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                    {
+                        "symbol": "FX:EURGBP",
+                        "width": 350,
+                        "height": 220,
+                        "locale": "en",
+                        "dateRange": "1M",
+                        "colorTheme": "dark",
+                        "isTransparent": false,
+                        "autosize": false,
+                        "chartOnly": false,
+                        "noTimeScale": false,
+                        "backgroundColor": "rgba(0, 0, 0, 1)",
+                        "gridLineColor": "rgba(42, 46, 57, 0.3)"
+                    }
+                    </script>
+                </div>
+            </div>
+
+            <!-- EUR/JPY -->
+            <div class="pair-widget">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                    {
+                        "symbol": "FX:EURJPY",
+                        "width": 350,
+                        "height": 220,
+                        "locale": "en",
+                        "dateRange": "1M",
+                        "colorTheme": "dark",
+                        "isTransparent": false,
+                        "autosize": false,
+                        "chartOnly": false,
+                        "noTimeScale": false,
+                        "backgroundColor": "rgba(0, 0, 0, 1)",
+                        "gridLineColor": "rgba(42, 46, 57, 0.3)"
+                    }
+                    </script>
+                </div>
+            </div>
+
+            <!-- GBP/JPY -->
+            <div class="pair-widget">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                    {
+                        "symbol": "FX:GBPJPY",
+                        "width": 350,
+                        "height": 220,
+                        "locale": "en",
+                        "dateRange": "1M",
+                        "colorTheme": "dark",
+                        "isTransparent": false,
+                        "autosize": false,
+                        "chartOnly": false,
+                        "noTimeScale": false,
+                        "backgroundColor": "rgba(0, 0, 0, 1)",
+                        "gridLineColor": "rgba(42, 46, 57, 0.3)"
+                    }
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="breaking-news-header">
+            <h1 class="main-title">Market Analysis</h1>
+            <p class="subtitle">Real-Time Trading Charts</p>
+        </div>
+        
+        <!-- TradingView Widget BEGIN -->
+        <div class="tradingview-widget-container" style="height: 800px; width: 100%;">
+            <div class="tradingview-widget-container__widget"></div>
+            <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+            {
+               "symbols": [
+    ["Apple", "AAPL|1D"],
+    ["Google", "GOOGL|1D"],
+    ["Microsoft", "MSFT|1D"],
+    ["NVIDIA", "NVDA|1D"],
+    ["AMD", "AMD|1D"],
+    ["Tesla", "TSLA|1D"],
+    ["Amazon", "AMZN|1D"],
+    ["Coinbase", "HBARUSD|1D"],
+    ["Lucid Motors", "LCID|1D"],
+    ["Super Micro Computer", "SMCI|1D"],
+    ["Nio", "NIO|1D"],
+    ["Palantir", "PLTR|1D"],
+    ["IBIT", "IBIT|1D"],
+    ["Nu Holdings", "NU|1D"],
+    ["Intel", "INTC|1D"],
+    ["Opendoor", "OPEN|1D"],
+    ["Plug Power", "PLUG|1D"],
+    ["SoFi", "SOFI|1D"],
+    ["Rigetti Computing", "RGTI|1D"],
+    ["SPDR S&P 500 ETF", "SPY|1D"],
+    ["Robinhood", "HOOD|1D"],
+    ["American Airlines", "AAL|1D"],
+    ["BlackBerry", "BB|1D"],
+    ["Marathon Digital", "MARA|1D"],
+    ["Alibaba", "BABA|1D"],
+    ["BigBear.ai", "BBAI|1D"],
+    ["AT&T", "T|1D"],
+    ["RIG", "RIG|1D"],
+    ["NVDL", "NVDL|1D"],
+    ["QQQ", "QQQ|1D"],
+    ["SoundHound AI", "SOUN|1D"],
+    ["AppLovin", "APP|1D"],
+    ["XLF", "XLF|1D"],
+    ["Pfizer", "PFE|1D"],
+    ["Rivian", "RIVN|1D"],
+    ["XPeng", "XPEV|1D"],
+    ["FuboTV", "FUBO|1D"],
+    ["Archer Aviation", "ACHR|1D"],
+    ["Stellantis", "STLA|1D"],
+    ["Snapchat", "SNAP|1D"],
+    ["Micron", "MU|1D"],
+    ["Broadcom", "AVGO|1D"],
+    ["MicroStrategy", "MSTR|1D"],
+    ["Block (Square)", "SQ|1D"],
+    ["XYZ", "XYZ|1D"],
+    ["Walmart", "WMT|1D"],
+    ["Templeton EM", "TEM|1D"],
+    ["Oklo", "OKLO|1D"],
+    ["Verizon", "VZ|1D"],
+    ["Tilray", "TLRY|1D"],
+    ["Nokia", "NOK|1D"],
+    ["AST SpaceMobile", "ASTS|1D"],
+    ["Rocket Lab", "RKLB|1D"],
+    ["Nike", "NKE|1D"],
+    ["Peloton", "PTON|1D"],
+    ["Vertiv", "VRT|1D"],
+    ["UUUU", "UUUU|1D"],
+    ["Iris Energy", "IREN|1D"],
+    ["PayPal", "PYPL|1D"],
+    ["Unity Software", "U|1D"],
+    ["Meta (Facebook)", "META|1D"],
+    ["Taiwan Semiconductor", "TSM|1D"],
+    ["Marvell Technology", "MRVL|1D"],
+    ["Merck", "MRK|1D"],
+    ["ARK Innovation ETF", "ARKK|1D"],
+    ["Cisco", "CSCO|1D"],
+    ["Pacific Gas & Electric", "PCG|1D"],
+    ["Carnival", "CCL|1D"],
+    ["Snowflake", "SNOW|1D"],
+    ["Salesforce", "CRM|1D"],
+    ["NextEra Energy", "NEE|1D"],
+    ["Dell Technologies", "DELL|1D"],
+    ["Microchip Technology", "MCHP|1D"],
+    ["Toast", "TOST|1D"],
+    ["C3.ai", "AI|1D"],
+    ["Goldman Sachs", "GS|1D"],
+    ["Google (Alphabet)", "GOOGL|1D"],
+    ["Disney", "DIS|1D"],
+    ["ExxonMobil", "XOM|1D"],
+    ["Netflix", "NFLX|1D"],
+    ["Advanced Micro Devices", "AMD|1D"],
+    ["ARK Web x.0 ETF", "ARKW|1D"],
+    ["Bitcoin USD", "BTCUSD|1D"],
+    ["Ethereum USD", "ETHUSD|1D"],
+    ["Solana USD", "SOLUSD|1D"],
+    ["US 10-Year Treasury", "US10Y|1D"],
+    ["US Dollar Index", "DXY|1D"],
+    ["Volatility Index", "VIX|1D"]
+],
+
+                "chartOnly": false,
+                "width": "100%",
+                "height": 650,
+                "locale": "en",
+                "colorTheme": "dark",
+                "autosize": true,
+                "showVolume": true,
+                "showMA": true,
+                "hideDateRanges": false,
+                "hideMarketStatus": false,
+                "hideSymbolLogo": false,
+                "scalePosition": "right",
+                "scaleMode": "Normal",
+                "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+                "fontSize": "12",
+                
+                "noTimeScale": false,
+                "valuesTracking": "1",
+                "changeMode": "price-and-percent",
+                "chartType": "area",
+                "maLineColor": "rgba(92, 0, 255, 1)",
+                "maLineWidth": 1,
+                "maLength": 50,
+                "backgroundColor": "rgba(0, 0, 0, 1)",
+                "widgetFontColor": "rgba(134, 65, 255, 1)",
+                "lineWidth": 2,
+                "lineType": 0,
+                "dateRanges": [
+                    "1d|1",
+                    "1m|30",
+                    "3m|60",
+                    "12m|1D",
+                    "60m|1W",
+                    "all|1M"
+                ],
+                "dateFormat": "MMM dd, yyyy"
+            }
+            </script>
+        </div>
+        <!-- TradingView Widget END -->
+    </div>
+</body>
+</html> 
