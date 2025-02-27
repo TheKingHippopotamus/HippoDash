@@ -33,8 +33,6 @@
             gap: 25px;
             margin-top: 110px;
             margin-bottom: 40px;
-            position: relative;
-            z-index: 2;
         }
 
         .video-container {
@@ -83,39 +81,49 @@
             }
 
             .breaking-news-header {
-                height: auto;
                 padding: 10px;
-                flex-direction: column;
-                gap: 10px;
+                height: auto;
+                min-height: 250px;
             }
 
             .header-left {
                 width: 100%;
                 justify-content: center;
+                order: 1;
             }
 
             .header-center {
-                position: static;
-                transform: none;
-                min-width: unset;
                 width: 100%;
-            }
-
-            .nav-buttons {
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-
-            .nav-button {
-                min-width: 100px;
-                padding: 8px 16px;
-                font-size: 12px;
+                order: 3;
+                padding: 10px 0;
             }
 
             .header-right {
                 width: 100%;
-                flex-direction: column;
+                order: 2;
+                justify-content: center;
                 gap: 10px;
+            }
+
+            .nav-buttons {
+                flex-wrap: wrap;
+                gap: 8px;
+                padding: 0 5px;
+            }
+
+            .nav-button {
+                min-width: calc(50% - 10px);
+                font-size: 13px;
+                padding: 8px 12px;
+            }
+
+            .logo {
+                width: 40px;
+                height: 40px;
+            }
+
+            .dashboard-title {
+                font-size: 16px;
             }
 
             .market-timer {
@@ -130,11 +138,13 @@
             .videos-grid {
                 grid-template-columns: 1fr;
                 gap: 15px;
+                margin-top: 400px;
             }
 
             .video-container {
                 height: 0;
                 padding-bottom: 56.25%;
+                margin-bottom: 5px;
             }
 
             .buttons-container {
@@ -143,15 +153,16 @@
             }
 
             .toggle-btn {
-                width: 36px;
-                height: 36px;
+                width: 28px;
+                height: 28px;
+                background-size: 50%;
             }
         }
 
         @media (max-width: 480px) {
             .container {
                 padding: 10px;
-                margin-top: 360px;
+                margin-top: 450px;
             }
 
             .nav-buttons {
@@ -174,8 +185,22 @@
             }
 
             .toggle-btn {
-                width: 32px;
-                height: 32px;
+                width: 24px;
+                height: 24px;
+            }
+
+            .breaking-news-header {
+                min-height: 300px;
+            }
+
+            .nav-button {
+                min-width: 100%;
+                margin-bottom: 5px;
+            }
+
+            .market-timer, .social-button {
+                width: 100%;
+                max-width: none;
             }
         }
 
@@ -503,11 +528,11 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 80px;
             z-index: 1001;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .header-left {
