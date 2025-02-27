@@ -25,7 +25,7 @@
             margin: 0 auto;
             padding: 30px;
             margin-top: 1px;
-            margin-right: 370px;
+            margin-right: 0;
         }
 
         .videos-grid {
@@ -171,52 +171,38 @@
         }
 
         .navbar {
-            position: fixed;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            width: 380px;
-            background: rgba(0, 0, 0, 0.95);
-            border-left: 2px solid var(--neon-purple);
-            overflow-y: auto;
-            padding: 0;
-            z-index: 1000;
+            display: none;
         }
 
         .video-controls-group {
             display: flex;
-            flex-direction: column;
             align-items: center;
+            justify-content: center;
             background: rgba(0, 0, 0, 0.5);
             padding: 10px;
             border-radius: 15px;
             border: 1px solid rgba(157, 0, 255, 0.2);
-            gap: 10px;
+            gap: 15px;
+            margin: 10px 0;
             width: 100%;
-            box-sizing: border-box;
         }
 
         .video-thumbnail {
-            width: 60px;
-            height: 60px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid var(--neon-purple);
-            margin-bottom: 5px;
         }
 
-        .video-number {
-            color: var(--neon-blue);
-            font-size: 12px;
-            min-width: 15px;
-            text-align: center;
-            margin-right: 5px;
+        .buttons-container {
+            display: flex;
+            gap: 10px;
         }
 
-        /* עדכון סגנון המתגים */
         .toggle-btn {
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
             border: 2px solid var(--neon-purple);
             background: rgba(0, 0, 0, 0.7);
@@ -254,41 +240,12 @@
             background-repeat: no-repeat;
         }
 
-        .toggle-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(157, 0, 255, 0.2),
-                transparent
-            );
-            transition: 0.5s;
-        }
-
-        .toggle-btn:hover::before {
-            left: 100%;
-        }
-
         .toggle-btn.active {
             background-color: rgba(157, 0, 255, 0.3);
             border-color: var(--neon-blue);
             box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
         }
 
-        /* הסרת האייקונים הישנים */
-        .toggle-btn.play::after,
-        .toggle-btn.volume::after,
-        .toggle-btn.play::before,
-        .toggle-btn.volume::before {
-            content: none;
-        }
-
-        /* עדכון הטולטיפ */
         .toggle-btn[data-tooltip]::after {
             content: attr(data-tooltip);
             position: absolute;
@@ -313,15 +270,39 @@
             opacity: 1;
         }
 
-        /* אנימציית ניאון למסך */
-        @keyframes neonGlow {
-            0% { box-shadow: 0 0 5px var(--neon-purple), 0 0 10px var(--neon-purple), 0 0 15px var(--neon-purple); }
-            50% { box-shadow: 0 0 10px var(--neon-purple), 0 0 20px var(--neon-purple), 0 0 30px var(--neon-purple); }
-            100% { box-shadow: 0 0 5px var(--neon-purple), 0 0 10px var(--neon-purple), 0 0 15px var(--neon-purple); }
+        @media (max-width: 768px) {
+            .video-controls-group {
+                flex-direction: row;
+                padding: 8px;
+            }
+
+            .video-thumbnail {
+                width: 30px;
+                height: 30px;
+            }
+
+            .toggle-btn {
+                width: 30px;
+                height: 30px;
+            }
+
+            .toggle-btn[data-tooltip]::after {
+                display: none;
+            }
         }
 
-        .video-container.active {
-            animation: neonGlow 3s ease-in-out;
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-top: 110px;
+            margin-bottom: 40px;
+        }
+
+        .video-pair-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         /* הוספת אפקט hover משופר */
@@ -330,20 +311,6 @@
             box-shadow: 0 0 15px rgba(157, 0, 255, 0.4);
             transform: scale(1.05);
             transition: all 0.3s ease;
-        }
-
-        /* סידור הכפתורים בשורה */
-        .buttons-container {
-            display: flex;
-            gap: 15px;
-            margin-top: 5px;
-        }
-
-        /* הסרת הסגנונות המיותרים */
-        .navbar > div {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
         }
 
         /* הוספת סגנונות חדשים */
@@ -442,31 +409,6 @@
             position: relative;
         }
 
-        /* עדכון הטולטיפ */
-        .toggle-btn::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            background: rgba(0, 0, 0, 0.9);
-            color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            white-space: nowrap;
-            left: 120%;
-            top: 50%;
-            transform: translateY(-50%);
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s ease;
-            border: 1px solid var(--neon-purple);
-            box-shadow: 0 0 10px rgba(157, 0, 255, 0.2);
-            z-index: 1100;
-        }
-
-        .toggle-btn:hover::after {
-            opacity: 1;
-        }
-
         /* הוספת אייקונים לכפתורים */
         .toggle-btn.play::before {
             content: '';
@@ -493,7 +435,7 @@
         /* סגנונות לכותרת ראשית */
         .breaking-news-header {
             text-align: center;
-            padding: 15px 15px;
+            padding: 15px 30px;
             background: rgba(0, 0, 0, 0.95);
             border-bottom: 2px solid var(--neon-purple);
             position: fixed;
@@ -511,6 +453,7 @@
             display: flex;
             align-items: center;
             gap: 20px;
+            min-width: 200px;
         }
 
         .logo {
@@ -537,21 +480,37 @@
         }
 
         .header-center {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            min-width: 400px;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            transform: none;
+            min-width: auto;
+            padding: 0 20px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            min-width: 340px;
+            justify-content: flex-end;
         }
 
         .nav-buttons {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             justify-content: center;
+            width: 100%;
+            max-width: 600px;
         }
 
         .nav-button {
+            flex: 1;
             min-width: 120px;
-            padding: 12px 24px;
+            max-width: 180px;
+            padding: 12px 20px;
             background: rgba(0, 0, 0, 0.7);
             border: 1px solid rgba(157, 0, 255, 0.3);
             border-radius: 12px;
@@ -563,8 +522,10 @@
             overflow: hidden;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             backdrop-filter: blur(5px);
+            white-space: nowrap;
         }
 
         .nav-button:before {
@@ -605,75 +566,6 @@
             text-shadow: 0 0 10px rgba(157, 0, 255, 0.5);
         }
 
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .social-button {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 24px;
-            background: rgba(0, 172, 238, 0.1);
-            border: 1px solid rgba(0, 172, 238, 0.3);
-            border-radius: 12px;
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(5px);
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            min-width: 140px;
-            justify-content: center;
-        }
-
-        .social-button:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(0, 172, 238, 0.2),
-                transparent
-            );
-            transition: 0.5s;
-            animation: shine 3s infinite;
-        }
-
-        @keyframes shine {
-            0% { left: -100%; }
-            50% { left: 100%; }
-            100% { left: 100%; }
-        }
-
-        .social-button:hover {
-            background: rgba(0, 172, 238, 0.2);
-            border-color: rgba(0, 172, 238, 0.8);
-            transform: translateY(-2px);
-            box-shadow: 0 0 20px rgba(0, 172, 238, 0.4);
-        }
-
-        .social-button img {
-            width: 22px;
-            height: 22px;
-            filter: drop-shadow(0 0 5px rgba(0, 172, 238, 0.5));
-            transition: transform 0.3s ease;
-        }
-
-        .social-button:hover img {
-            transform: scale(1.1) rotate(-5deg);
-        }
-
-        /* סגנונות לשעון ספירה לאחור */
         .market-timer {
             position: static;
             display: flex;
@@ -748,91 +640,32 @@
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <div class="sidebar-header">
-            <img src="./static/hippo Small.jpeg" alt="Hippopotamus Logo" class="logo">
-        
-        </div>
-        <div class="video-controls-group">
-            <img class="video-thumbnail" src="https://img.youtube.com/vi/xLep9rUAvaI/default.jpg" alt="Video 1">
-            <div class="buttons-container">
-                <button class="toggle-btn play" onclick="toggleVideo(0)" data-tooltip="הפעלה/עצירת סרטון"></button>
-                <button class="toggle-btn volume" onclick="toggleVolume(0)" data-tooltip="השתקה/הפעלת סאונד"></button>
-            </div>
-        </div>
-        <div class="video-controls-group">
-            <img class="video-thumbnail" src="https://img.youtube.com/vi/9NyxcX3rhQs/default.jpg" alt="Video 2">
-            <div class="buttons-container">
-                <button class="toggle-btn play" onclick="toggleVideo(1)" data-tooltip="הפעלה/עצירת סרטון"></button>
-                <button class="toggle-btn volume" onclick="toggleVolume(1)" data-tooltip="השתקה/הפעלת סאונד"></button>
-            </div>
-        </div>
-        <div class="video-controls-group">
-            <img class="video-thumbnail" src="https://img.youtube.com/vi/gCNeDWCI0vo/default.jpg" alt="Video 3">
-            <div class="buttons-container">
-                <button class="toggle-btn play" onclick="toggleVideo(2)" data-tooltip="הפעלה/עצירת סרטון"></button>
-                <button class="toggle-btn volume" onclick="toggleVolume(2)" data-tooltip="השתקה/הפעלת סאונד"></button>
-            </div>
-        </div>
-        <div class="video-controls-group">
-            <img class="video-thumbnail" src="https://img.youtube.com/vi/f39oHo6vFLg/default.jpg" alt="Video 5">
-            <div class="buttons-container">
-                <button class="toggle-btn play" onclick="toggleVideo(3)" data-tooltip="vol/play"></button>
-                <button class="toggle-btn volume" onclick="toggleVolume(3)" data-tooltip="vol/mute"></button>
-            </div>
-        </div>
-        <div class="video-controls-group">
-            <img class="video-thumbnail" src="https://img.youtube.com/vi/EK76hBAOMEk/default.jpg" alt="Video 6">
-            <div class="buttons-container">
-                <button class="toggle-btn play" onclick="toggleVideo(4)" data-tooltip="vol/play"></button>
-                <button class="toggle-btn volume" onclick="toggleVolume(4)" data-tooltip="vol/mute"></button>
-            </div>
-        </div>
-        <div class="video-controls-group">
-            <img class="video-thumbnail" src="https://img.youtube.com/vi/OlUMDZchivQ/default.jpg" alt="Video 7">
-            <div class="buttons-container">
-                <button class="toggle-btn play" onclick="toggleVideo(5)" data-tooltip="vol/play"></button>
-                <button class="toggle-btn volume" onclick="toggleVolume(5)" data-tooltip="vol/mute"></button>
-            </div>
-        </div>
-        <div class="video-controls-group">
-            <img class="video-thumbnail" src="https://img.youtube.com/vi/CG2XDTgvZPo/default.jpg" alt="Video 8">
-            <div class="buttons-container">
-                <button class="toggle-btn play" onclick="toggleVideo(6)" data-tooltip="vol/play"></button>
-                <button class="toggle-btn volume" onclick="toggleVolume(6)" data-tooltip="vol/mute"></button>
-            </div>
-        </div>
-        <div class="video-controls-group">
-            <img class="video-thumbnail" src="https://img.youtube.com/vi/pykpO5kQJ98/default.jpg" alt="Video 9">
-            <div class="buttons-container">
-                <button class="toggle-btn play" onclick="toggleVideo(7)" data-tooltip="vol/play"></button>
-                    <button class="toggle-btn volume" onclick="toggleVolume(7)" data-tooltip="vol/mute"></button>
-            </div>
-        </div>
-    </div>
-
     <div class="container">
         <div class="breaking-news-header">
             <div class="header-left">
                 <img src="./static/hippobeat.jpeg" alt="Hippopotamus Logo" class="logo">
-                <h1 class="dashboard-title">Hippopotamus<br>News</h1>
+                <h1 class="dashboard-title">Hippopotamus<br>Trading</h1>
             </div>
             
             <div class="header-center">
-                <div class="nav-buttons">
-                    <a href="index.html" class="nav-button active">
-                        <span>📺</span>
-                        Finance Live 24/7  
-                    </a>
-                    <a href="trading.html" class="nav-button">
-                        <span>📊</span>
+            <div class="nav-buttons">
+                <a href="index.html" class="nav-button active">
+                    <span>📺</span>
+                        Finance Live 24/7
+                </a>
+                <a href="trading.html" class="nav-button">
+                    <span>📊</span>
                         Trading Analysis
+                    </a>
+                    <a href="market.html" class="nav-button">
+                        <span>📈</span>
+                        Market Overview
                     </a>
                     <a href="news.html" class="nav-button">
                         <span>📅</span>
                         Economic Calendar
-                    </a>
-                </div>
+            </a>
+        </div>
             </div>
 
             <div class="header-right">
@@ -842,18 +675,18 @@
                         <div class="countdown-segment">
                             <span class="countdown-number" id="hours">00</span>
                             <span class="countdown-label">Hours</span>
-                        </div>
+        </div>
                         <div class="countdown-segment">
                             <span class="countdown-number" id="minutes">00</span>
                             <span class="countdown-label">Minutes</span>
-                        </div>
+            </div>
                         <div class="countdown-segment">
                             <span class="countdown-number" id="seconds">00</span>
                             <span class="countdown-label">Seconds</span>
-                        </div>
-                    </div>
+        </div>
+            </div>
                     <div class="market-status" id="marketStatus">Market Closed</div>
-                </div>
+        </div>
                 <a href="https://x.com/LmlyhNyr" target="_blank" class="social-button">
                     <span style="font-family: Arial, sans-serif; font-weight: bold; font-size: 20px; margin-right: 8px;">𝕏</span>
                     @LmlyhNyr
@@ -861,6 +694,7 @@
             </div>
         </div>
         <div class="videos-grid">
+            <div class="video-pair-container">
             <div class="video-container">
                 <iframe 
                     id="player0"
@@ -870,71 +704,146 @@
                     allowfullscreen>
                 </iframe>
             </div>
+                <div class="video-controls-group">
+                    <img class="video-thumbnail" src="https://img.youtube.com/vi/xLep9rUAvaI/default.jpg" alt="Video 1">
+                    <div class="buttons-container">
+                        <button class="toggle-btn play" onclick="toggleVideo(0)" data-tooltip="הפעלה/עצירת סרטון"></button>
+                        <button class="toggle-btn volume" onclick="toggleVolume(0)" data-tooltip="השתקה/הפעלת סאונד"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-pair-container">
             <div class="video-container">
                 <iframe 
                     id="player1"
-                    src="https://www.youtube.com/embed/9NyxcX3rhQs?enablejsapi=1"
+                        src="https://www.youtube.com/embed/f39oHo6vFLg?enablejsapi=1"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin"
                     allowfullscreen>
                 </iframe>
             </div>
+                <div class="video-controls-group">
+                    <img class="video-thumbnail" src="https://img.youtube.com/vi/f39oHo6vFLg/default.jpg" alt="Video 2">
+                    <div class="buttons-container">
+                        <button class="toggle-btn play" onclick="toggleVideo(1)" data-tooltip="הפעלה/עצירת סרטון"></button>
+                        <button class="toggle-btn volume" onclick="toggleVolume(1)" data-tooltip="השתקה/הפעלת סאונד"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-pair-container">
             <div class="video-container">
                 <iframe 
                     id="player2"
-                    src="https://www.youtube.com/embed/gCNeDWCI0vo?enablejsapi=1"
+                        src="https://www.youtube.com/embed/EK76hBAOMEk?enablejsapi=1"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowfullscreen>
                 </iframe>
             </div>
+                <div class="video-controls-group">
+                    <img class="video-thumbnail" src="https://img.youtube.com/vi/EK76hBAOMEk/default.jpg" alt="Video 3">
+                    <div class="buttons-container">
+                        <button class="toggle-btn play" onclick="toggleVideo(2)" data-tooltip="הפעלה/עצירת סרטון"></button>
+                        <button class="toggle-btn volume" onclick="toggleVolume(2)" data-tooltip="השתקה/הפעלת סאונד"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-pair-container">
             <div class="video-container">
                 <iframe 
                     id="player3"
-                    src="https://www.youtube.com/embed/f39oHo6vFLg?enablejsapi=1"
+                        src="https://www.youtube.com/embed/9NyxcX3rhQs?enablejsapi=1"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowfullscreen>
                 </iframe>
             </div>
+                <div class="video-controls-group">
+                    <img class="video-thumbnail" src="https://img.youtube.com/vi/9NyxcX3rhQs/default.jpg" alt="Video 4">
+                    <div class="buttons-container">
+                        <button class="toggle-btn play" onclick="toggleVideo(3)" data-tooltip="הפעלה/עצירת סרטון"></button>
+                        <button class="toggle-btn volume" onclick="toggleVolume(3)" data-tooltip="השתקה/הפעלת סאונד"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-pair-container">
             <div class="video-container">
                 <iframe 
                     id="player4"
-                    src="https://www.youtube.com/embed/EK76hBAOMEk?enablejsapi=1"
+                        src="https://www.youtube.com/embed/gCNeDWCI0vo?enablejsapi=1"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowfullscreen>
                 </iframe>
             </div>
+                <div class="video-controls-group">
+                    <img class="video-thumbnail" src="https://img.youtube.com/vi/gCNeDWCI0vo/default.jpg" alt="Video 5">
+                    <div class="buttons-container">
+                        <button class="toggle-btn play" onclick="toggleVideo(4)" data-tooltip="הפעלה/עצירת סרטון"></button>
+                        <button class="toggle-btn volume" onclick="toggleVolume(4)" data-tooltip="השתקה/הפעלת סאונד"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-pair-container">
             <div class="video-container">
                 <iframe 
                     id="player5"
-                    src="https://www.youtube.com/embed/OlUMDZchivQ?enablejsapi=1"
+                        src="https://www.youtube.com/embed/CG2XDTgvZPo?enablejsapi=1"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowfullscreen>
                 </iframe>
             </div>
+                <div class="video-controls-group">
+                    <img class="video-thumbnail" src="https://img.youtube.com/vi/CG2XDTgvZPo/default.jpg" alt="Video 6">
+                    <div class="buttons-container">
+                        <button class="toggle-btn play" onclick="toggleVideo(5)" data-tooltip="הפעלה/עצירת סרטון"></button>
+                        <button class="toggle-btn volume" onclick="toggleVolume(5)" data-tooltip="השתקה/הפעלת סאונד"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-pair-container">
             <div class="video-container">
                 <iframe 
                     id="player6"
-                    src="https://www.youtube.com/embed/CG2XDTgvZPo?enablejsapi=1"
+                        src="https://www.youtube.com/embed/OlUMDZchivQ?enablejsapi=1"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin"
                     allowfullscreen>
                 </iframe>
             </div>
+                <div class="video-controls-group">
+                    <img class="video-thumbnail" src="https://img.youtube.com/vi/OlUMDZchivQ/default.jpg" alt="Video 7">
+                    <div class="buttons-container">
+                        <button class="toggle-btn play" onclick="toggleVideo(6)" data-tooltip="הפעלה/עצירת סרטון"></button>
+                        <button class="toggle-btn volume" onclick="toggleVolume(6)" data-tooltip="השתקה/הפעלת סאונד"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-pair-container">
             <div class="video-container">
                 <iframe 
                     id="player7"
                     src="https://www.youtube.com/embed/pykpO5kQJ98?enablejsapi=1"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin"
                     allowfullscreen>
                 </iframe>
+                </div>
+                <div class="video-controls-group">
+                    <img class="video-thumbnail" src="https://img.youtube.com/vi/pykpO5kQJ98/default.jpg" alt="Video 8">
+                    <div class="buttons-container">
+                        <button class="toggle-btn play" onclick="toggleVideo(7)" data-tooltip="הפעלה/עצירת סרטון"></button>
+                        <button class="toggle-btn volume" onclick="toggleVolume(7)" data-tooltip="השתקה/הפעלת סאונד"></button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -978,10 +887,10 @@
             if (!players[index]) return;
             
             if (isPlaying[index]) {
-                players[index].pauseVideo();
+                        players[index].pauseVideo();
                 isPlaying[index] = false;
-            } else {
-                players[index].playVideo();
+                    } else {
+                        players[index].playVideo();
                 isPlaying[index] = true;
             }
             updateButtonStates(index);
@@ -990,12 +899,12 @@
         // פונקציה להשתקה/הפעלת סאונד
         function toggleVolume(index) {
             if (!players[index]) return;
-            
+                    
             if (isMuted[index]) {
-                players[index].unMute();
+                        players[index].unMute();
                 isMuted[index] = false;
-            } else {
-                players[index].mute();
+                    } else {
+                        players[index].mute();
                 isMuted[index] = true;
             }
             updateButtonStates(index);

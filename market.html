@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- הוספת סקריפט רשמי של TradingView -->
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js"></script>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js"></script>
     
-    <title>Hippopotamus Trading Dashboard</title>
+    <title>Market Overview - Hippopotamus Trading</title>
     <style>
-        /* הגדרות בסיס */
         :root {
             --dark-bg: #0a0a0a;
             --card-bg: #1a1a1a;
@@ -28,12 +26,10 @@
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 30px;
-            margin-top: 200px;
-            padding-top: 20px;
+            padding: 20px;
+            margin-top: 100px;
         }
 
-        /* עיצוב כותרת */
         .breaking-news-header {
             text-align: center;
             padding: 15px 30px;
@@ -43,7 +39,7 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 100px;
+            height: 80px;
             z-index: 1001;
             display: flex;
             justify-content: space-between;
@@ -169,25 +165,29 @@
 
         .market-timer {
             position: static;
-            transform: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             padding: 8px;
-            width: auto;
-            min-width: 150px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 1px solid rgba(157, 0, 255, 0.3);
+            width: 140px;
         }
 
         .market-timer-title {
-            font-size: 12px;
+            font-size: 10px;
             color: #888;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         .countdown {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             font-family: 'Segoe UI', monospace;
-            font-size: 20px;
+            font-size: 16px;
             color: var(--neon-purple);
             text-shadow: 0 0 10px rgba(157, 0, 255, 0.5);
         }
@@ -241,16 +241,10 @@
             border: 1px solid rgba(0, 150, 255, 0.3);
         }
 
-        .market-status.after-hours {
-            background: rgba(255, 150, 0, 0.2);
-            color: #ffa500;
-            border: 1px solid rgba(255, 150, 0, 0.3);
-        }
-
         .social-button {
             display: flex;
             align-items: center;
-            gap: 0px;
+            gap: 8px;
             padding: 12px 24px;
             background: rgba(0, 172, 238, 0.1);
             border: 1px solid rgba(0, 172, 238, 0.3);
@@ -262,33 +256,6 @@
             position: relative;
             overflow: hidden;
             backdrop-filter: blur(5px);
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            min-width: 140px;
-            justify-content: center;
-        }
-
-        .social-button:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(0, 172, 238, 0.2),
-                transparent
-            );
-            transition: 0.5s;
-            animation: shine 3s infinite;
-        }
-
-        @keyframes shine {
-            0% { left: -100%; }
-            50% { left: 100%; }
-            100% { left: 100%; }
         }
 
         .social-button:hover {
@@ -298,129 +265,38 @@
             box-shadow: 0 0 20px rgba(0, 172, 238, 0.4);
         }
 
-        .social-button img {
-            width: 22px;
-            height: 22px;
-            filter: drop-shadow(0 0 5px rgba(0, 172, 238, 0.5));
-            transition: transform 0.3s ease;
-        }
-
-        .social-button:hover img {
-            transform: scale(1.1) rotate(-5deg);
-        }
-
-        /* Hide TradingView Copyright */
-        .tradingview-widget-copyright {
-            display: none !important;
-        }
-
-        /* סגנונות סיידבר */
-        .navbar {
-            position: fixed;
-            top: 120px;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.95);
-            border-bottom: 2px solid var(--neon-purple);
-            padding: 0;
-            z-index: 1000;
-            overflow: hidden;
-            height: 50px;
-        }
-
-        .pairs-wrapper {
-         
-            background: rgba(0, 0, 0, 0.95);
-            overflow: hidden;
-            padding: 10px 0;
-        }
-
-        .pairs-container {
-            display: flex;
-            gap: 10px;
-            padding: 0 10px;
-            animation: scroll 60s linear infinite;
-            width: max-content;
-            height: 20px;  
-        }
-
-        .pairs-container:hover {
-            animation-play-state: paused;
-        }
-
-        @keyframes scroll {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(calc(-50% - 5px));
-            }
-        }
-
-        .pair-widget {
-            flex: 0 0 auto;
-            width: 200px;
-        
-            border: 1px solid rgba(157, 0, 255, 0.2);
-            border-radius: 8px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            background: rgba(0, 0, 0, 0.5);
-            position: relative;
-        }
-
-        .pair-widget:hover {
-            transform: scale(1.02);
-            border-color: var(--neon-purple);
-            box-shadow: 0 0 15px rgba(157, 0, 255, 0.3);
-            z-index: 1;
-        }
-
-        .trading-grid {
-            margin-top: 20px;
-            padding-top: 20px;
-            display: grid;
-            gap: 20px;
-            grid-template-columns: 1fr;
-        }
-
-        .trading-widget {
-            width: 95%;
-            height: 100%; 
+        .market-overview-container {
+            padding: 20px;
             background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
             border: 1px solid rgba(157, 0, 255, 0.3);
-            border-radius: 10px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            margin-top: -50px;
-            margin-right: 40px;
         }
 
-        .trading-widget:hover {
+        .market-widgets-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .market-widget {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            border: 1px solid rgba(157, 0, 255, 0.2);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .market-widget:hover {
             border-color: var(--neon-purple);
             box-shadow: 0 0 15px rgba(157, 0, 255, 0.3);
         }
 
-        /* סגנון גלילה מותאם */
-        .pairs-container::-webkit-scrollbar {
-            width: 8px;
-       
-        }
-
-        .pairs-container::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 4px;
-        }
-
-        .pairs-container::-webkit-scrollbar-thumb {
-            background: var(--neon-purple);
-            border-radius: 4px;
-            
-        }
-
-        /* Mobile Responsive Styles */
         @media (max-width: 1200px) {
+            .market-widgets-grid {
+                grid-template-columns: 1fr;
+            }
+
             .breaking-news-header {
                 padding: 15px;
             }
@@ -435,18 +311,23 @@
             }
         }
 
+        /* Hide TradingView Copyright */
+        .tradingview-widget-copyright {
+            display: none !important;
+        }
+
+        /* Mobile Responsive Styles */
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
-                margin-top: 300px;
-            }
-
-            .navbar {
-                top: 160px;
+                margin-top: 200px;
             }
 
             .breaking-news-header {
                 height: auto;
+                padding: 15px;
+                flex-direction: column;
+                gap: 15px;
             }
 
             .header-left {
@@ -488,19 +369,11 @@
                 max-width: 300px;
                 justify-content: center;
             }
-
-            .trading-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .trading-widget {
-                height: 1px;
-            }
         }
 
         @media (max-width: 480px) {
             .container {
-                margin-top: 340px;
+                margin-top: 240px;
             }
 
             .nav-button {
@@ -509,27 +382,25 @@
         }
     </style>
 </head>
-
 <body>
-    
     <div class="container">
         <div class="breaking-news-header">
             <div class="header-left">
-            <img src="./static/hippobeat.jpeg" alt="Hippopotamus Logo" class="logo">
-            <h1 class="dashboard-title">Hippopotamus<br>Trading</h1>
+                <img src="./static/hippobeat.jpeg" alt="Hippopotamus Logo" class="logo">
+                <h1 class="dashboard-title">Hippopotamus<br>Trading</h1>
             </div>
             
             <div class="header-center">
-            <div class="nav-buttons">
-                <a href="index.html" class="nav-button">
-                    <span>📺</span>
+                <div class="nav-buttons">
+                    <a href="index.html" class="nav-button">
+                        <span>📺</span>
                         Finance Live 24/7
-                </a>
-                <a href="trading.html" class="nav-button active">
-                    <span>📊</span>
+                    </a>
+                    <a href="trading.html" class="nav-button">
+                        <span>📊</span>
                         Trading Analysis
                     </a>
-                    <a href="market.html" class="nav-button">
+                    <a href="market.html" class="nav-button active">
                         <span>📈</span>
                         Market Overview
                     </a>
@@ -565,130 +436,196 @@
                 </a>
             </div>
         </div>
-        
-        <!-- הוספת הסיידבר -->
-        <div class="navbar">
-            <div class="pairs-wrapper">
-                <!-- TradingView Widget BEGIN -->
-                <div class="tradingview-widget-container">
-                    <div class="tradingview-widget-container__widget"></div>
-                    <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
-                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-                    {
-                        "symbols": [
-                            {
-                                "proName": "FX:EURUSD",
-                                "title": "EUR/USD"
-                            },
-                            {
-                                "proName": "FX:GBPUSD",
-                                "title": "GBP/USD"
-                            },
-                            {
-                                "proName": "FX:USDJPY",
-                                "title": "USD/JPY"
-                            },
-                            {
-                                "proName": "FX:USDCHF",
-                                "title": "USD/CHF"
-                            },
-                            {
-                                "proName": "FX:AUDUSD",
-                                "title": "AUD/USD"
-                            },
-                            {
-                                "proName": "FX:USDCAD",
-                                "title": "USD/CAD"
-                            },
-                            {
-                                "proName": "FX:NZDUSD",
-                                "title": "NZD/USD"
-                            },
-                            {
-                                "proName": "FX:EURJPY",
-                                "title": "EUR/JPY"
-                            },
-                            {
-                                "proName": "FX:GBPJPY",
-                                "title": "GBP/JPY"
-                            },
-                            {
-                                "proName": "FX:AUDJPY",
-                                "title": "AUD/JPY"
-                            }
-                        ],
-                        "showSymbolLogo": true,
-                        "colorTheme": "dark",
-                        "isTransparent": true,
-                        "displayMode": "adaptive",
-                        "locale": "en"
-                    }
-                    </script>
-                </div>
-                <!-- TradingView Widget END -->
-            </div>
-        </div>
 
-        <!-- הוספת הגריד הראשי -->
-        <div class="trading-grid">
-            <!-- TradingView Widget BEGIN -->
-            <div class="trading-widget">
-                <div class="tradingview-widget-container">
-                    <div id="tradingview_main"></div>
-                    <script type="text/javascript">
-                        new TradingView.widget({
-                            "width": "100%",
-                            "height": "600",
-                            "symbol": "FX:EURUSD",
-                            "interval": "D",
-                            "timezone": "Asia/Jerusalem",
-                            "theme": "dark",
-                            "style": "1",
+        <div class="market-overview-container">
+            <div class="market-widgets-grid">
+                <div class="market-widget">
+                <!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+    <div class="tradingview-widget-container__widget"></div>
+    <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+    {
+    "colorTheme": "dark",
+    "dateRange": "1D",
+    "showChart": true,
+    "locale": "en",
+    "largeChartUrl": "",
+    "isTransparent": true,
+    "showSymbolLogo": true,
+    "showFloatingTooltip": true,
+    "width": "100%",
+    "height": "890",
+    "plotLineColorGrowing": "rgba(0, 255, 0, 1)",
+    "plotLineColorFalling": "rgba(255, 0, 0, 1)",
+    "gridLineColor": "rgba(42, 46, 57, 0)",
+    "scaleFontColor": "rgba(219, 219, 219, 1)",
+    "belowLineFillColorGrowing": "rgba(92, 12, 255, 1)",
+    "belowLineFillColorFalling": "rgba(92, 12, 255, 1)",
+    "belowLineFillColorGrowingBottom": "rgba(11, 83, 148, 1)",
+    "belowLineFillColorFallingBottom": "rgba(11, 83, 148, 1)",
+    "symbolActiveColor": "rgba(255, 255, 0, 0.6)",
+    "tabs": [
+      {
+        "title": "Indices",
+        "symbols": [
+          {
+            "s": "FOREXCOM:SPXUSD",
+            "d": "S&P 500 Index"
+          },
+          {
+            "s": "FOREXCOM:NSXUSD",
+            "d": "US 100 Cash CFD"
+          },
+          {
+            "s": "FOREXCOM:DJI",
+            "d": "Dow Jones Industrial Average Index"
+          },
+          {
+            "s": "INDEX:NKY",
+            "d": "Japan 225"
+          },
+          {
+            "s": "INDEX:DEU40",
+            "d": "DAX Index"
+          },
+          {
+            "s": "FOREXCOM:UKXGBP",
+            "d": "FTSE 100 Index"
+          }
+        ],
+        "originalTitle": "Indices"
+      },
+      {
+        "title": "Futures",
+        "symbols": [
+          {
+            "s": "CME_MINI:ES1!",
+            "d": "S&P 500"
+          },
+          {
+            "s": "CME:6E1!",
+            "d": "Euro"
+          },
+          {
+            "s": "COMEX:GC1!",
+            "d": "Gold"
+          },
+          {
+            "s": "NYMEX:CL1!",
+            "d": "WTI Crude Oil"
+          },
+          {
+            "s": "NYMEX:NG1!",
+            "d": "Gas"
+          },
+          {
+            "s": "CBOT:ZC1!",
+            "d": "Corn"
+          }
+        ],
+        "originalTitle": "Futures"
+      },
+      {
+        "title": "Bonds",
+        "symbols": [
+          {
+            "s": "CBOT:ZB1!",
+            "d": "T-Bond"
+          },
+          {
+            "s": "CBOT:UB1!",
+            "d": "Ultra T-Bond"
+          },
+          {
+            "s": "EUREX:FGBL1!",
+            "d": "Euro Bund"
+          },
+          {
+            "s": "EUREX:FBTP1!",
+            "d": "Euro BTP"
+          },
+          {
+            "s": "EUREX:FGBM1!",
+            "d": "Euro BOBL"
+          }
+        ],
+        "originalTitle": "Bonds"
+      },
+      {
+        "title": "Forex",
+        "symbols": [
+          {
+            "s": "FX:EURUSD",
+            "d": "EUR to USD"
+          },
+          {
+            "s": "FX:GBPUSD",
+            "d": "GBP to USD"
+          },
+          {
+            "s": "FX:USDJPY",
+            "d": "USD to JPY"
+          },
+          {
+            "s": "FX:USDCHF",
+            "d": "USD to CHF"
+          },
+          {
+            "s": "FX:AUDUSD",
+            "d": "AUD to USD"
+          },
+          {
+            "s": "FX:USDCAD",
+            "d": "USD to CAD"
+          }
+        ],
+        "originalTitle": "Forex"
+      }
+    ]
+  }
+    </script>
+  </div>
+  <!-- TradingView Widget END -->
+                    <!-- TradingView Widget END -->
+                </div>
+                <div class="market-widget">
+                    <!-- TradingView Widget BEGIN -->
+                    <div class="tradingview-widget-container">
+                        <div class="tradingview-widget-container__widget"></div>
+                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-hotlists.js" async>
+                        {
+                            "colorTheme": "dark",
+                            "dateRange": "12M",
+                            "exchange": "US",
+                            "showChart": true,
                             "locale": "en",
-                            "toolbar_bg": "#f1f3f6",
-                            "enable_publishing": false,
-                            "hide_side_toolbar": false,
-                            "allow_symbol_change": true,
-                            "container_id": "tradingview_main",
-                            "backgroundColor": "rgba(0, 0, 0, 1)",
-                            "gridLineColor": "rgba(42, 46, 57, 0.3)"
-                        });
-                    </script>
+                            "largeChartUrl": "",
+                            "isTransparent": true,
+                            "showSymbolLogo": false,
+                            "showFloatingTooltip": true,
+                            "width": "100%",
+                            "height": "800",
+                            "plotLineColorGrowing": "rgba(41, 98, 255, 1)",
+                            "plotLineColorFalling": "rgba(41, 98, 255, 1)",
+                            "gridLineColor": "rgba(42, 46, 57, 0)",
+                            "scaleFontColor": "rgba(219, 219, 219, 1)",
+                            "belowLineFillColorGrowing": "rgba(41, 98, 255, 0.12)",
+                            "belowLineFillColorFalling": "rgba(41, 98, 255, 0.12)",
+                            "belowLineFillColorGrowingBottom": "rgba(41, 98, 255, 0)",
+                            "belowLineFillColorFallingBottom": "rgba(41, 98, 255, 0)",
+                            "symbolActiveColor": "rgba(41, 98, 255, 0.12)"
+                        }
+                        </script>
+                    </div>
+                    <!-- TradingView Widget END -->
                 </div>
             </div>
-            <!-- TradingView Widget END -->
-        
-            <!-- TradingView Widget BEGIN -->
-            <div class="trading-widget">
-                <div class="tradingview-widget-container">
-                    <div id="tradingview_secondary"></div>
-                    <script type="text/javascript">
-                        new TradingView.widget({
-                "width": "100%",
-                            "height": "600",
-                            "symbol": "FX:GBPUSD",
-                            "interval": "D",
-                            "timezone": "Asia/Jerusalem",
-                            "theme": "dark",
-                            "style": "1",
-                "locale": "en",
-                            "toolbar_bg": "#f1f3f6",
-                            "enable_publishing": false,
-                            "hide_side_toolbar": false,
-                            "allow_symbol_change": true,
-                            "container_id": "tradingview_secondary",
-                "backgroundColor": "rgba(0, 0, 0, 1)",
-                            "gridLineColor": "rgba(42, 46, 57, 0.3)"
-                        });
-            </script>
-                </div>
-            </div>
-            <!-- TradingView Widget END -->
         </div>
     </div>
 
     <script>
-        // פונקציה לעדכון טיימר השוק
+        // Market Timer Function
         function updateMarketTimer() {
             const now = new Date();
             const marketOpen = new Date();
@@ -730,7 +667,7 @@
             statusElement.className = `market-status ${statusClass}`;
         }
 
-        // עדכון הטיימר כל שנייה
+        // Update timer every second
         setInterval(updateMarketTimer, 1000);
         updateMarketTimer();
     </script>

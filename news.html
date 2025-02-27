@@ -67,7 +67,7 @@
         /* עיצוב כותרת */
         .breaking-news-header {
             text-align: center;
-            padding: 15px 15px;
+            padding: 15px 30px;
             background: rgba(0, 0, 0, 0.95);
             border-bottom: 2px solid var(--neon-purple);
             position: fixed;
@@ -85,6 +85,7 @@
             display: flex;
             align-items: center;
             gap: 20px;
+            min-width: 200px;
         }
 
         .logo {
@@ -113,21 +114,29 @@
         }
 
         .header-center {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            min-width: 400px;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            transform: none;
+            min-width: auto;
+            padding: 0 20px;
         }
 
         .nav-buttons {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             justify-content: center;
+            width: 100%;
+            max-width: 600px;
         }
 
         .nav-button {
+            flex: 1;
             min-width: 120px;
-            padding: 12px 24px;
+            max-width: 180px;
+            padding: 12px 20px;
             background: rgba(0, 0, 0, 0.7);
             border: 1px solid rgba(157, 0, 255, 0.3);
             border-radius: 12px;
@@ -139,8 +148,10 @@
             overflow: hidden;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             backdrop-filter: blur(5px);
+            white-space: nowrap;
         }
 
         .nav-button:before {
@@ -775,6 +786,10 @@
                     <a href="trading.html" class="nav-button">
                         <span>📊</span>
                         Trading Analysis
+                    </a>
+                    <a href="market.html" class="nav-button">
+                        <span>📈</span>
+                        Market Overview
                     </a>
                     <a href="news.html" class="nav-button active">
                         <span>📅</span>
