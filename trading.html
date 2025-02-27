@@ -27,10 +27,8 @@
 
         .container {
             max-width: 1400px;
-            margin: 0 auto;
-            padding: 30px;
-            margin-top: 200px;
-            padding-top: 20px;
+            margin: 280px auto 0;
+            padding: 0 20px;
         }
 
         /* עיצוב כותרת */
@@ -259,7 +257,7 @@
             text-decoration: none;
             font-size: 14px;
             transition: all 0.3s ease;
-            position: relative;
+                position: relative;
             overflow: hidden;
             backdrop-filter: blur(5px);
             font-weight: 600;
@@ -273,7 +271,7 @@
             position: absolute;
             top: 0;
             left: -100%;
-            width: 100%;
+                width: 100%;
             height: 100%;
             background: linear-gradient(
                 90deg,
@@ -315,24 +313,31 @@
         }
 
         /* סגנונות סיידבר */
-        .navbar {
+            .navbar {
             position: fixed;
-            top: 120px;
+            top: 135px;
             left: 0;
             right: 0;
-            background: rgba(0, 0, 0, 0.95);
-            border-bottom: 2px solid var(--neon-purple);
-            padding: 0;
-            z-index: 1000;
-            overflow: hidden;
             height: 50px;
+            background-color: #000000;
+            border-top: 1px solid #2a2e39;
+            border-bottom: 1px solid var(--neon-purple);
+            box-shadow: 0 4px 15px rgba(157, 0, 255, 0.3);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .forex-crypto-navbar {
+            top: 185px;
         }
 
         .pairs-wrapper {
-         
-            background: rgba(0, 0, 0, 0.95);
-            overflow: hidden;
-            padding: 10px 0;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
 
         .pairs-container {
@@ -387,14 +392,13 @@
 
         .trading-widget {
             width: 95%;
-            height: 100%; 
+            height: 600px;
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(157, 0, 255, 0.3);
             border-radius: 10px;
             overflow: hidden;
             transition: all 0.3s ease;
-            margin-top: -50px;
-            margin-right: 40px;
+            margin: 0 auto;
         }
 
         .trading-widget:hover {
@@ -438,11 +442,20 @@
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
-                margin-top: 300px;
+                margin-top: 360px;
             }
 
             .navbar {
-                top: 160px;
+                top: 195px;
+            }
+
+            .forex-crypto-navbar {
+                top: 245px;
+            }
+
+            .trading-widget {
+                width: 100%;
+                height: 500px;
             }
 
             .breaking-news-header {
@@ -465,14 +478,14 @@
                 justify-content: center;
                 min-width: auto;
                 flex-wrap: wrap;
-            }
+        }
 
-            .nav-buttons {
+        .nav-buttons {
                 flex-wrap: wrap;
-                gap: 10px;
-            }
+            gap: 10px;
+        }
 
-            .nav-button {
+        .nav-button {
                 min-width: 45%;
                 font-size: 12px;
                 padding: 10px 15px;
@@ -486,7 +499,7 @@
             .social-button {
                 width: 100%;
                 max-width: 300px;
-                justify-content: center;
+            justify-content: center;
             }
 
             .trading-grid {
@@ -500,7 +513,10 @@
 
         @media (max-width: 480px) {
             .container {
-                margin-top: 340px;
+                margin-top: 400px;
+            }
+            .pairs-wrapper {
+                padding: 0 5px;
             }
 
             .nav-button {
@@ -547,32 +563,104 @@
                         <div class="countdown-segment">
                             <span class="countdown-number" id="hours">00</span>
                             <span class="countdown-label">Hours</span>
-                        </div>
+                </div>
                         <div class="countdown-segment">
                             <span class="countdown-number" id="minutes">00</span>
                             <span class="countdown-label">Minutes</span>
-                        </div>
+            </div>
                         <div class="countdown-segment">
                             <span class="countdown-number" id="seconds">00</span>
                             <span class="countdown-label">Seconds</span>
-                        </div>
-                    </div>
+                </div>
+            </div>
                     <div class="market-status" id="marketStatus">Market Closed</div>
                 </div>
                 <a href="https://x.com/LmlyhNyr" target="_blank" class="social-button">
                     <span style="font-family: Arial, sans-serif; font-weight: bold; font-size: 20px; margin-right: 8px;">𝕏</span>
                     @LmlyhNyr
                 </a>
+                </div>
             </div>
-        </div>
-        
+
         <!-- הוספת הסיידבר -->
         <div class="navbar">
             <div class="pairs-wrapper">
-                <!-- TradingView Widget BEGIN -->
+                <!-- TradingView Widget BEGIN - Stocks -->
                 <div class="tradingview-widget-container">
                     <div class="tradingview-widget-container__widget"></div>
-                    <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+                    {
+                        "symbols": [
+                            {
+                                "proName": "NASDAQ:AAPL",
+                                "title": "Apple"
+                            },
+                            {
+                                "proName": "NASDAQ:GOOGL",
+                                "title": "Google"
+                            },
+                            {
+                                "proName": "NASDAQ:MSFT",
+                                "title": "Microsoft"
+                            },
+                            {
+                                "proName": "NASDAQ:NVDA",
+                                "title": "NVIDIA"
+                            },
+                            {
+                                "proName": "NASDAQ:AMD",
+                                "title": "AMD"
+                            },
+                            {
+                                "proName": "NASDAQ:TSLA",
+                                "title": "Tesla"
+                            },
+                            {
+                                "proName": "NASDAQ:AMZN",
+                                "title": "Amazon"
+                            },
+                            {
+                                "proName": "NYSE:PLTR",
+                                "title": "Palantir"
+                            },
+                            {
+                                "proName": "NYSE:NIO",
+                                "title": "Nio"
+                            },
+                            {
+                                "proName": "NYSE:BABA",
+                                "title": "Alibaba"
+                            },
+                            {
+                                "proName": "NASDAQ:META",
+                                "title": "Meta"
+                            },
+                            {
+                                "proName": "NYSE:DIS",
+                                "title": "Disney"
+                            },
+                            {
+                                "proName": "NASDAQ:NFLX",
+                                "title": "Netflix"
+                            }
+                        ],
+                        "showSymbolLogo": true,
+                        "colorTheme": "dark",
+                        "isTransparent": true,
+                        "displayMode": "adaptive",
+                        "locale": "en"
+                    }
+                    </script>
+                </div>
+                <!-- TradingView Widget END -->
+                </div>
+            </div>
+
+        <div class="navbar forex-crypto-navbar">
+            <div class="pairs-wrapper">
+                <!-- TradingView Widget BEGIN - Forex & Crypto -->
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
                     <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
                     {
                         "symbols": [
@@ -601,20 +689,16 @@
                                 "title": "USD/CAD"
                             },
                             {
-                                "proName": "FX:NZDUSD",
-                                "title": "NZD/USD"
+                                "proName": "BITSTAMP:BTCUSD",
+                                "title": "Bitcoin"
                             },
                             {
-                                "proName": "FX:EURJPY",
-                                "title": "EUR/JPY"
+                                "proName": "BITSTAMP:ETHUSD",
+                                "title": "Ethereum"
                             },
                             {
-                                "proName": "FX:GBPJPY",
-                                "title": "GBP/JPY"
-                            },
-                            {
-                                "proName": "FX:AUDJPY",
-                                "title": "AUD/JPY"
+                                "proName": "BITSTAMP:SOLUSD",
+                                "title": "Solana"
                             }
                         ],
                         "showSymbolLogo": true,
@@ -626,8 +710,8 @@
                     </script>
                 </div>
                 <!-- TradingView Widget END -->
+                </div>
             </div>
-        </div>
 
         <!-- הוספת הגריד הראשי -->
         <div class="trading-grid">
@@ -644,20 +728,20 @@
                             "timezone": "Asia/Jerusalem",
                             "theme": "dark",
                             "style": "1",
-                            "locale": "en",
+                        "locale": "en",
                             "toolbar_bg": "#f1f3f6",
                             "enable_publishing": false,
                             "hide_side_toolbar": false,
                             "allow_symbol_change": true,
                             "container_id": "tradingview_main",
-                            "backgroundColor": "rgba(0, 0, 0, 1)",
-                            "gridLineColor": "rgba(42, 46, 57, 0.3)"
+                        "backgroundColor": "rgba(0, 0, 0, 1)",
+                        "gridLineColor": "rgba(42, 46, 57, 0.3)"
                         });
                     </script>
                 </div>
             </div>
             <!-- TradingView Widget END -->
-        
+
             <!-- TradingView Widget BEGIN -->
             <div class="trading-widget">
                 <div class="tradingview-widget-container">
@@ -671,16 +755,16 @@
                             "timezone": "Asia/Jerusalem",
                             "theme": "dark",
                             "style": "1",
-                "locale": "en",
+                        "locale": "en",
                             "toolbar_bg": "#f1f3f6",
                             "enable_publishing": false,
                             "hide_side_toolbar": false,
                             "allow_symbol_change": true,
                             "container_id": "tradingview_secondary",
-                "backgroundColor": "rgba(0, 0, 0, 1)",
-                            "gridLineColor": "rgba(42, 46, 57, 0.3)"
+                        "backgroundColor": "rgba(0, 0, 0, 1)",
+                        "gridLineColor": "rgba(42, 46, 57, 0.3)"
                         });
-            </script>
+                    </script>
                 </div>
             </div>
             <!-- TradingView Widget END -->
@@ -733,6 +817,6 @@
         // עדכון הטיימר כל שנייה
         setInterval(updateMarketTimer, 1000);
         updateMarketTimer();
-    </script>
+            </script>
 </body>
 </html> 

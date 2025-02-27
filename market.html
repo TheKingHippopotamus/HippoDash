@@ -25,9 +25,8 @@
 
         .container {
             max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-            margin-top: 100px;
+            margin: 220px auto 0;
+            padding: 0 20px;
         }
 
         .breaking-news-header {
@@ -320,7 +319,15 @@
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
-                margin-top: 200px;
+                margin-top: 320px;
+            }
+
+            .navbar {
+                top: 165px;
+            }
+
+            .forex-crypto-navbar {
+                top: 215px;
             }
 
             .breaking-news-header {
@@ -373,12 +380,66 @@
 
         @media (max-width: 480px) {
             .container {
-                margin-top: 240px;
+                margin-top: 340px;
             }
 
             .nav-button {
                 min-width: 100%;
             }
+        }
+
+        /* Add navbar styles */
+        .navbar {
+            position: fixed;
+            top: 105px;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background-color: #000000;
+            border-top: 1px solid #2a2e39;
+            border-bottom: 1px solid var(--neon-purple);
+            box-shadow: 0 4px 15px rgba(157, 0, 255, 0.3);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .forex-crypto-navbar {
+            top: 155px;
+        }
+
+        .pairs-wrapper {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .pairs-container {
+            display: flex;
+            gap: 10px;
+            padding: 0 10px;
+            animation: scroll 60s linear infinite;
+            width: max-content;
+            height: 20px;
+        }
+
+        .pairs-container:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(calc(-50% - 5px));
+            }
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
     </style>
 </head>
@@ -434,6 +495,136 @@
                     <span style="font-family: Arial, sans-serif; font-weight: bold; font-size: 20px; margin-right: 8px;">𝕏</span>
                     @LmlyhNyr
                 </a>
+            </div>
+        </div>
+
+        <div class="navbar">
+            <div class="pairs-wrapper">
+                <!-- TradingView Widget BEGIN - Stocks -->
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+                    {
+                        "symbols": [
+                            {
+                                "proName": "NASDAQ:AAPL",
+                                "title": "Apple"
+                            },
+                            {
+                                "proName": "NASDAQ:GOOGL",
+                                "title": "Google"
+                            },
+                            {
+                                "proName": "NASDAQ:MSFT",
+                                "title": "Microsoft"
+                            },
+                            {
+                                "proName": "NASDAQ:NVDA",
+                                "title": "NVIDIA"
+                            },
+                            {
+                                "proName": "NASDAQ:AMD",
+                                "title": "AMD"
+                            },
+                            {
+                                "proName": "NASDAQ:TSLA",
+                                "title": "Tesla"
+                            },
+                            {
+                                "proName": "NASDAQ:AMZN",
+                                "title": "Amazon"
+                            },
+                            {
+                                "proName": "NYSE:PLTR",
+                                "title": "Palantir"
+                            },
+                            {
+                                "proName": "NYSE:NIO",
+                                "title": "Nio"
+                            },
+                            {
+                                "proName": "NYSE:BABA",
+                                "title": "Alibaba"
+                            },
+                            {
+                                "proName": "NASDAQ:META",
+                                "title": "Meta"
+                            },
+                            {
+                                "proName": "NYSE:DIS",
+                                "title": "Disney"
+                            },
+                            {
+                                "proName": "NASDAQ:NFLX",
+                                "title": "Netflix"
+                            }
+                        ],
+                        "showSymbolLogo": true,
+                        "colorTheme": "dark",
+                        "isTransparent": true,
+                        "displayMode": "adaptive",
+                        "locale": "en"
+                    }
+                    </script>
+                </div>
+                <!-- TradingView Widget END -->
+            </div>
+        </div>
+
+        <div class="navbar forex-crypto-navbar">
+            <div class="pairs-wrapper">
+                <!-- TradingView Widget BEGIN - Forex & Crypto -->
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+                    {
+                        "symbols": [
+                            {
+                                "proName": "FX:EURUSD",
+                                "title": "EUR/USD"
+                            },
+                            {
+                                "proName": "FX:GBPUSD",
+                                "title": "GBP/USD"
+                            },
+                            {
+                                "proName": "FX:USDJPY",
+                                "title": "USD/JPY"
+                            },
+                            {
+                                "proName": "FX:USDCHF",
+                                "title": "USD/CHF"
+                            },
+                            {
+                                "proName": "FX:AUDUSD",
+                                "title": "AUD/USD"
+                            },
+                            {
+                                "proName": "FX:USDCAD",
+                                "title": "USD/CAD"
+                            },
+                            {
+                                "proName": "BITSTAMP:BTCUSD",
+                                "title": "Bitcoin"
+                            },
+                            {
+                                "proName": "BITSTAMP:ETHUSD",
+                                "title": "Ethereum"
+                            },
+                            {
+                                "proName": "BITSTAMP:SOLUSD",
+                                "title": "Solana"
+                            }
+                        ],
+                        "showSymbolLogo": true,
+                        "colorTheme": "dark",
+                        "isTransparent": true,
+                        "displayMode": "adaptive",
+                        "locale": "en"
+                    }
+                    </script>
+                </div>
+                <!-- TradingView Widget END -->
             </div>
         </div>
 
@@ -666,6 +857,22 @@
             statusElement.textContent = status;
             statusElement.className = `market-status ${statusClass}`;
         }
+
+        // Add smooth scroll functionality
+        document.querySelectorAll('.nav-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                // Only for links to other pages
+                if (!this.getAttribute('href').includes('#')) {
+                    return;
+                }
+                
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
 
         // Update timer every second
         setInterval(updateMarketTimer, 1000);

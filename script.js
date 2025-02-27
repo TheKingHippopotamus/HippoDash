@@ -58,16 +58,25 @@ function loadCategoryVideos() {
             const categoryTitle = document.getElementById('category-title');
             categoryTitle.textContent = category.name;
             const videoGrid = document.getElementById('video-grid');
-            category.videos.slice(0, 8).forEach(video => {
-                const categoryDiv = document.createElement('div');
-                categoryDiv.className = 'video-category';
+            
+            // Create video containers with click handlers
+            category.videos.slice(0, 8).forEach((video, index) => {
+                const videoContainer = document.createElement('div');
+                videoContainer.className = 'video-category';
+                videoContainer.dataset.videoId = video;
+                
                 const iframe = document.createElement('iframe');
-                // Add autoplay and muted attributes for videos that should autoplay
-                iframe.src = `https://www.youtube.com/embed/${video}?autoplay=1&mute=1`;
+                iframe.src = `https://www.youtube.com/embed/${video}?autoplay=${index < 2 ? '1' : '0'}&mute=1`;
                 iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
                 iframe.allowFullscreen = true;
-                categoryDiv.appendChild(iframe);
-                videoGrid.appendChild(categoryDiv);
+                
+                videoContainer.appendChild(iframe);
+                videoGrid.appendChild(videoContainer);
+                
+                // Add click handler only for videos after the first two
+                if (index >= 2) {
+                    videoContainer.addEventListener('click', () => swapVideo(videoContainer));
+                }
             });
         })
         .catch(error => {
@@ -75,4 +84,32 @@ function loadCategoryVideos() {
             document.getElementById('video-grid').innerHTML = 
                 '<div class="error">שגיאה בטעינת הסרטונים. אנא נסה שוב מאוחר יותר.</div>';
         });
+}
+
+function swapVideo(clickedContainer) {
+    const videoGrid = document.getElementById('video-grid');
+    const firstVideo = videoGrid.children[0];
+    const secondVideo = videoGrid.children[1];
+    const clickedVideo = clickedContainer;
+    const clickedVideoId = clickedContainer.dataset.videoId;
+    
+    // Store the original positions and IDs
+    const firstVideoId = firstVideo.dataset.videoId;
+    const secondVideoId = secondVideo.dataset.videoId;
+    
+    // Update iframes with new video IDs
+    firstVideo.querySelector('iframe').src = `https://www.youtube.com/embed/${clickedVideoId}?autoplay=1&mute=1`;
+    secondVideo.querySelector('iframe').src = `https://www.youtube.com/embed/${firstVideoId}?autoplay=1&mute=1`;
+    clickedContainer.querySelector('iframe').src = `https://www.youtube.com/embed/${secondVideoId}?autoplay=0&mute=1`;
+    
+    // Update data attributes
+    firstVideo.dataset.videoId = clickedVideoId;
+    secondVideo.dataset.videoId = firstVideoId;
+    clickedContainer.dataset.videoId = secondVideoId;
+    
+    // Scroll to top smoothly
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
 }

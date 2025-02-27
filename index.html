@@ -22,9 +22,8 @@
 
         .container {
             max-width: 1400px;
-            margin: 0 auto;
+            margin: 120px auto 0;
             padding: 30px;
-            margin-top: 1px;
             margin-right: 0;
         }
 
@@ -34,6 +33,8 @@
             gap: 25px;
             margin-top: 110px;
             margin-bottom: 40px;
+            position: relative;
+            z-index: 2;
         }
 
         .video-container {
@@ -70,7 +71,15 @@
             .container {
                 margin-right: 0;
                 padding: 15px;
-                margin-top: 160px;
+                margin-top: 320px;
+            }
+
+            .navbar {
+                top: 195px;
+            }
+
+            .forex-crypto-navbar {
+                top: 245px;
             }
 
             .breaking-news-header {
@@ -142,7 +151,7 @@
         @media (max-width: 480px) {
             .container {
                 padding: 10px;
-                margin-top: 140px;
+                margin-top: 360px;
             }
 
             .nav-buttons {
@@ -171,7 +180,59 @@
         }
 
         .navbar {
-            display: none;
+            position: fixed;
+            top: 135px;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background-color: rgba(0, 0, 0, 0.95);
+            border-top: 1px solid #2a2e39;
+            border-bottom: 1px solid var(--neon-purple);
+            box-shadow: 0 4px 15px rgba(157, 0, 255, 0.3);
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .navbar.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-100%);
+        }
+
+        .forex-crypto-navbar {
+            top: 185px;
+        }
+
+        .pairs-wrapper {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .pairs-container {
+            display: flex;
+            gap: 10px;
+            padding: 0 10px;
+            animation: scroll 60s linear infinite;
+            width: max-content;
+            height: 20px;
+        }
+
+        .pairs-container:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(calc(-50% - 5px));
+            }
         }
 
         .video-controls-group {
@@ -637,6 +698,20 @@
             color: #ff0000;
             border: 1px solid rgba(255, 0, 0, 0.3);
         }
+
+        .toggle-btn.fullscreen {
+            background-image: url('./static/fullscreen.png');
+            background-size: 60%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .toggle-btn.live {
+            background-image: url('./static/live.png');
+            background-size: 60%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
     </style>
 </head>
 <body>
@@ -693,7 +768,140 @@
                 </a>
             </div>
         </div>
-        <div class="videos-grid">
+
+        <!-- Stocks Navbar -->
+        <div class="navbar">
+            <div class="pairs-wrapper">
+                <!-- TradingView Widget BEGIN - Stocks -->
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+                    {
+                        "symbols": [
+                            {
+                                "proName": "NASDAQ:AAPL",
+                                "title": "Apple"
+                            },
+                            {
+                                "proName": "NASDAQ:GOOGL",
+                                "title": "Google"
+                            },
+                            {
+                                "proName": "NASDAQ:MSFT",
+                                "title": "Microsoft"
+                            },
+                            {
+                                "proName": "NASDAQ:NVDA",
+                                "title": "NVIDIA"
+                            },
+                            {
+                                "proName": "NASDAQ:AMD",
+                                "title": "AMD"
+                            },
+                            {
+                                "proName": "NASDAQ:TSLA",
+                                "title": "Tesla"
+                            },
+                            {
+                                "proName": "NASDAQ:AMZN",
+                                "title": "Amazon"
+                            },
+                            {
+                                "proName": "NYSE:PLTR",
+                                "title": "Palantir"
+                            },
+                            {
+                                "proName": "NYSE:NIO",
+                                "title": "Nio"
+                            },
+                            {
+                                "proName": "NYSE:BABA",
+                                "title": "Alibaba"
+                            },
+                            {
+                                "proName": "NASDAQ:META",
+                                "title": "Meta"
+                            },
+                            {
+                                "proName": "NYSE:DIS",
+                                "title": "Disney"
+                            },
+                            {
+                                "proName": "NASDAQ:NFLX",
+                                "title": "Netflix"
+                            }
+                        ],
+                        "showSymbolLogo": true,
+                        "colorTheme": "dark",
+                        "isTransparent": true,
+                        "displayMode": "adaptive",
+                        "locale": "en"
+                    }
+                    </script>
+            </div>
+                <!-- TradingView Widget END -->
+        </div>
+    </div>
+
+        <!-- Forex & Crypto Navbar -->
+        <div class="navbar forex-crypto-navbar">
+            <div class="pairs-wrapper">
+                <!-- TradingView Widget BEGIN - Forex & Crypto -->
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+                    {
+                        "symbols": [
+                            {
+                                "proName": "FX:EURUSD",
+                                "title": "EUR/USD"
+                            },
+                            {
+                                "proName": "FX:GBPUSD",
+                                "title": "GBP/USD"
+                            },
+                            {
+                                "proName": "FX:USDJPY",
+                                "title": "USD/JPY"
+                            },
+                            {
+                                "proName": "FX:USDCHF",
+                                "title": "USD/CHF"
+                            },
+                            {
+                                "proName": "FX:AUDUSD",
+                                "title": "AUD/USD"
+                            },
+                            {
+                                "proName": "FX:USDCAD",
+                                "title": "USD/CAD"
+                            },
+                            {
+                                "proName": "BITSTAMP:BTCUSD",
+                                "title": "Bitcoin"
+                            },
+                            {
+                                "proName": "BITSTAMP:ETHUSD",
+                                "title": "Ethereum"
+                            },
+                            {
+                                "proName": "BITSTAMP:SOLUSD",
+                                "title": "Solana"
+                            }
+                        ],
+                        "showSymbolLogo": true,
+                        "colorTheme": "dark",
+                        "isTransparent": true,
+                        "displayMode": "adaptive",
+                        "locale": "en"
+                    }
+                </script>
+            </div>
+                <!-- TradingView Widget END -->
+        </div>
+        </div>
+
+        <div class="videos-grid" id="category-grid">
             <div class="video-pair-container">
             <div class="video-container">
                 <iframe 
@@ -709,6 +917,8 @@
                     <div class="buttons-container">
                         <button class="toggle-btn play" onclick="toggleVideo(0)" data-tooltip="הפעלה/עצירת סרטון"></button>
                         <button class="toggle-btn volume" onclick="toggleVolume(0)" data-tooltip="השתקה/הפעלת סאונד"></button>
+                        <button class="toggle-btn fullscreen" onclick="toggleFullscreen(0)" data-tooltip="מסך מלא"></button>
+                        <button class="toggle-btn live" onclick="goLive(0)" data-tooltip="חזרה לשידור חי"></button>
                     </div>
                 </div>
             </div>
@@ -728,6 +938,8 @@
                     <div class="buttons-container">
                         <button class="toggle-btn play" onclick="toggleVideo(1)" data-tooltip="הפעלה/עצירת סרטון"></button>
                         <button class="toggle-btn volume" onclick="toggleVolume(1)" data-tooltip="השתקה/הפעלת סאונד"></button>
+                        <button class="toggle-btn fullscreen" onclick="toggleFullscreen(1)" data-tooltip="מסך מלא"></button>
+                        <button class="toggle-btn live" onclick="goLive(1)" data-tooltip="חזרה לשידור חי"></button>
                     </div>
                 </div>
             </div>
@@ -747,6 +959,8 @@
                     <div class="buttons-container">
                         <button class="toggle-btn play" onclick="toggleVideo(2)" data-tooltip="הפעלה/עצירת סרטון"></button>
                         <button class="toggle-btn volume" onclick="toggleVolume(2)" data-tooltip="השתקה/הפעלת סאונד"></button>
+                        <button class="toggle-btn fullscreen" onclick="toggleFullscreen(2)" data-tooltip="מסך מלא"></button>
+                        <button class="toggle-btn live" onclick="goLive(2)" data-tooltip="חזרה לשידור חי"></button>
                     </div>
                 </div>
             </div>
@@ -766,6 +980,8 @@
                     <div class="buttons-container">
                         <button class="toggle-btn play" onclick="toggleVideo(3)" data-tooltip="הפעלה/עצירת סרטון"></button>
                         <button class="toggle-btn volume" onclick="toggleVolume(3)" data-tooltip="השתקה/הפעלת סאונד"></button>
+                        <button class="toggle-btn fullscreen" onclick="toggleFullscreen(3)" data-tooltip="מסך מלא"></button>
+                        <button class="toggle-btn live" onclick="goLive(3)" data-tooltip="חזרה לשידור חי"></button>
                     </div>
                 </div>
             </div>
@@ -785,6 +1001,8 @@
                     <div class="buttons-container">
                         <button class="toggle-btn play" onclick="toggleVideo(4)" data-tooltip="הפעלה/עצירת סרטון"></button>
                         <button class="toggle-btn volume" onclick="toggleVolume(4)" data-tooltip="השתקה/הפעלת סאונד"></button>
+                        <button class="toggle-btn fullscreen" onclick="toggleFullscreen(4)" data-tooltip="מסך מלא"></button>
+                        <button class="toggle-btn live" onclick="goLive(4)" data-tooltip="חזרה לשידור חי"></button>
                     </div>
                 </div>
             </div>
@@ -804,6 +1022,8 @@
                     <div class="buttons-container">
                         <button class="toggle-btn play" onclick="toggleVideo(5)" data-tooltip="הפעלה/עצירת סרטון"></button>
                         <button class="toggle-btn volume" onclick="toggleVolume(5)" data-tooltip="השתקה/הפעלת סאונד"></button>
+                        <button class="toggle-btn fullscreen" onclick="toggleFullscreen(5)" data-tooltip="מסך מלא"></button>
+                        <button class="toggle-btn live" onclick="goLive(5)" data-tooltip="חזרה לשידור חי"></button>
                     </div>
                 </div>
             </div>
@@ -823,6 +1043,8 @@
                     <div class="buttons-container">
                         <button class="toggle-btn play" onclick="toggleVideo(6)" data-tooltip="הפעלה/עצירת סרטון"></button>
                         <button class="toggle-btn volume" onclick="toggleVolume(6)" data-tooltip="השתקה/הפעלת סאונד"></button>
+                        <button class="toggle-btn fullscreen" onclick="toggleFullscreen(6)" data-tooltip="מסך מלא"></button>
+                        <button class="toggle-btn live" onclick="goLive(6)" data-tooltip="חזרה לשידור חי"></button>
                     </div>
                 </div>
             </div>
@@ -842,6 +1064,8 @@
                     <div class="buttons-container">
                         <button class="toggle-btn play" onclick="toggleVideo(7)" data-tooltip="הפעלה/עצירת סרטון"></button>
                         <button class="toggle-btn volume" onclick="toggleVolume(7)" data-tooltip="השתקה/הפעלת סאונד"></button>
+                        <button class="toggle-btn fullscreen" onclick="toggleFullscreen(7)" data-tooltip="מסך מלא"></button>
+                        <button class="toggle-btn live" onclick="goLive(7)" data-tooltip="חזרה לשידור חי"></button>
                     </div>
                 </div>
             </div>
@@ -877,37 +1101,175 @@
                             isMuted[i] = true;
                             updateButtonStates(i);
                         }
+                    },
+                    playerVars: {
+                        controls: 0,
+                        disablekb: 1,
+                        modestbranding: 1,
+                        rel: 0,
+                        showinfo: 0
                     }
                 });
             }
         }
 
-        // פונקציה להפעלה/עצירה של סרטון
-        function toggleVideo(index) {
-            if (!players[index]) return;
+        function swapVideos(clickedIndex) {
+            const videoGrid = document.getElementById('category-grid');
+            const containers = Array.from(videoGrid.querySelectorAll('.video-pair-container'));
             
-            if (isPlaying[index]) {
-                        players[index].pauseVideo();
-                isPlaying[index] = false;
-                    } else {
-                        players[index].playVideo();
-                isPlaying[index] = true;
-            }
-            updateButtonStates(index);
+            // אם זה אחד משני הסרטונים הראשונים, לא עושים כלום
+            if (clickedIndex <= 1) return;
+            
+            // שומרים את המצב הנוכחי של הסרטונים
+            const clickedVideo = containers[clickedIndex];
+            const firstVideo = containers[0];
+            const secondVideo = containers[1];
+            
+            // שומרים את המזהים של הסרטונים
+            const clickedVideoId = clickedVideo.querySelector('iframe').src.split('/').pop().split('?')[0];
+            const firstVideoId = firstVideo.querySelector('iframe').src.split('/').pop().split('?')[0];
+            const secondVideoId = secondVideo.querySelector('iframe').src.split('/').pop().split('?')[0];
+            
+            // מעדכנים את מקורות הסרטונים
+            firstVideo.querySelector('iframe').src = `https://www.youtube.com/embed/${clickedVideoId}?enablejsapi=1`;
+            secondVideo.querySelector('iframe').src = `https://www.youtube.com/embed/${firstVideoId}?enablejsapi=1`;
+            clickedVideo.querySelector('iframe').src = `https://www.youtube.com/embed/${secondVideoId}?enablejsapi=1`;
+            
+            // מעדכנים את התמונות הממוזערות
+            firstVideo.querySelector('.video-thumbnail').src = `https://img.youtube.com/vi/${clickedVideoId}/default.jpg`;
+            secondVideo.querySelector('.video-thumbnail').src = `https://img.youtube.com/vi/${firstVideoId}/default.jpg`;
+            clickedVideo.querySelector('.video-thumbnail').src = `https://img.youtube.com/vi/${secondVideoId}/default.jpg`;
+            
+            // גלילה חלקה למעלה
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+            
+            // מאתחלים מחדש את הנגנים
+            setTimeout(() => {
+                onYouTubeIframeAPIReady();
+            }, 500);
         }
 
-        // פונקציה להשתקה/הפעלת סאונד
-        function toggleVolume(index) {
-            if (!players[index]) return;
-                    
-            if (isMuted[index]) {
-                        players[index].unMute();
-                isMuted[index] = false;
-                    } else {
-                        players[index].mute();
-                isMuted[index] = true;
+        function toggleVideo(index) {
+            const player = players[index];
+            if (!player) return;
+            
+            if (index > 1) {
+                swapVideos(index);
+                setTimeout(() => {
+                    const newPlayer = players[0];
+                    if (newPlayer) {
+                        if (isPlaying[0]) {
+                            newPlayer.pauseVideo();
+                            isPlaying[0] = false;
+                        } else {
+                            newPlayer.playVideo();
+                            isPlaying[0] = true;
+                        }
+                        updateButtonStates(0);
+                    }
+                }, 1000);
+            } else {
+                if (isPlaying[index]) {
+                    player.pauseVideo();
+                    isPlaying[index] = false;
+                } else {
+                    player.playVideo();
+                    isPlaying[index] = true;
+                }
+                updateButtonStates(index);
             }
-            updateButtonStates(index);
+        }
+
+        function toggleVolume(index) {
+            const player = players[index];
+            if (!player) return;
+            
+            if (index > 1) {
+                swapVideos(index);
+                setTimeout(() => {
+                    const newPlayer = players[0];
+                    if (newPlayer) {
+                        if (isMuted[0]) {
+                            newPlayer.setVolume(100);
+                            newPlayer.unMute();
+                            isMuted[0] = false;
+                        } else {
+                            newPlayer.setVolume(0);
+                            newPlayer.mute();
+                            isMuted[0] = true;
+                        }
+                        updateButtonStates(0);
+                    }
+                }, 1000);
+            } else {
+                if (isMuted[index]) {
+                    player.setVolume(100);
+                    player.unMute();
+                    isMuted[index] = false;
+                } else {
+                    player.setVolume(0);
+                    player.mute();
+                    isMuted[index] = true;
+                }
+                updateButtonStates(index);
+            }
+        }
+
+        function toggleFullscreen(index) {
+            const player = players[index];
+            if (!player) return;
+            
+            if (index > 1) {
+                swapVideos(index);
+                setTimeout(() => {
+                    const newPlayer = players[0];
+                    if (newPlayer) {
+                        const iframe = newPlayer.getIframe();
+                        if (!document.fullscreenElement) {
+                            if (iframe.requestFullscreen) {
+                                iframe.requestFullscreen();
+                            } else if (iframe.webkitRequestFullscreen) {
+                                iframe.webkitRequestFullscreen();
+                            }
+                        }
+                    }
+                }, 1000);
+            } else {
+                const iframe = player.getIframe();
+                if (!document.fullscreenElement) {
+                    if (iframe.requestFullscreen) {
+                        iframe.requestFullscreen();
+                    } else if (iframe.webkitRequestFullscreen) {
+                        iframe.webkitRequestFullscreen();
+                    }
+                }
+            }
+        }
+
+        function goLive(index) {
+            const player = players[index];
+            if (!player) return;
+            
+            if (index > 1) {
+                swapVideos(index);
+                setTimeout(() => {
+                    const newPlayer = players[0];
+                    if (newPlayer) {
+                        newPlayer.seekTo(newPlayer.getDuration());
+                        newPlayer.playVideo();
+                        isPlaying[0] = true;
+                        updateButtonStates(0);
+                    }
+                }, 1000);
+            } else {
+                player.seekTo(player.getDuration());
+                player.playVideo();
+                isPlaying[index] = true;
+                updateButtonStates(index);
+            }
         }
 
         // עדכון מצב הכפתורים
@@ -974,6 +1336,28 @@
             if (typeof YT !== 'undefined' && YT.Player) {
                 onYouTubeIframeAPIReady();
             }
+        });
+
+        // Add scroll handling for navbars
+        let lastScrollTop = 0;
+        const navbars = document.querySelectorAll('.navbar');
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const isScrollingDown = scrollTop > lastScrollTop;
+            const scrollThreshold = 100; // Start hiding after scrolling 100px
+
+            if (scrollTop > scrollThreshold) {
+                navbars.forEach(navbar => {
+                    navbar.classList.add('hidden');
+                });
+            } else {
+                navbars.forEach(navbar => {
+                    navbar.classList.remove('hidden');
+                });
+            }
+
+            lastScrollTop = scrollTop;
         });
     </script>
 </body>
