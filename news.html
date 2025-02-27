@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hippopotamus Economic Calendar</title>
+    <style>
+        /* הגדרות בסיס */
+        :root {
+            --dark-bg: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --neon-purple: #9d00ff;
+            --neon-blue: #00f3ff;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: var(--dark-bg);
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+            margin-top: 100px;
+            margin-right: 400px;
+        }
+
+        /* סגנונות סיידבר */
+        .navbar {
+            position: fixed;
+            top: 80px;
+            right: 0;
+            bottom: 0;
+            width: 380px;
+            background: rgba(0, 0, 0, 0.95);
+            border-left: 2px solid var(--neon-purple);
+            overflow-y: auto;
+            padding: 20px 0;
+            z-index: 1000;
+        }
+
+        .sidebar-widgets {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            padding: 10px;
+        }
+
+        .widget-container {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(157, 0, 255, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+            height: 200px;
+            transition: all 0.3s ease;
+        }
+
+        .widget-container:hover {
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 15px rgba(157, 0, 255, 0.3);
+        }
+
+        /* עיצוב כותרת */
+        .breaking-news-header {
+            text-align: center;
+            padding: 15px 15px;
+            background: rgba(0, 0, 0, 0.95);
+            border-bottom: 2px solid var(--neon-purple);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            z-index: 1001;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            border: 2px solid var(--neon-purple);
+            box-shadow: 0 0 15px rgba(157, 0, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(157, 0, 255, 0.5);
+        }
+
+        .dashboard-title {
+            font-size: 18px;
+          
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(157, 0, 255, 0.3);
+        }
+
+        .header-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            min-width: 400px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .nav-button {
+            min-width: 120px;
+            padding: 12px 24px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(157, 0, 255, 0.3);
+            border-radius: 12px;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(5px);
+        }
+
+        .nav-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(157, 0, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .nav-button:hover:before {
+            left: 100%;
+        }
+
+        .nav-button:hover {
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 20px rgba(157, 0, 255, 0.3);
+            transform: translateY(-2px);
+            background: rgba(157, 0, 255, 0.1);
+        }
+
+        .nav-button.active {
+            background: rgba(157, 0, 255, 0.2);
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 15px rgba(157, 0, 255, 0.5);
+        }
+
+        .nav-button span {
+            font-size: 18px;
+            text-shadow: 0 0 10px rgba(157, 0, 255, 0.5);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .market-timer {
+            position: static;
+            transform: none;
+            padding: 8px;
+            width: auto;
+            min-width: 180px;
+        }
+
+        .social-button {
+            display: flex;
+            align-items: center;
+            gap: 0px;
+            padding: 12px 24px;
+            background: rgba(0, 172, 238, 0.1);
+            border: 1px solid rgba(0, 172, 238, 0.3);
+            border-radius: 12px;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            min-width: 140px;
+            justify-content: center;
+        }
+
+        .social-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(0, 172, 238, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        .social-button:hover {
+            background: rgba(0, 172, 238, 0.2);
+            border-color: rgba(0, 172, 238, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(0, 172, 238, 0.4);
+        }
+
+        .social-button img {
+            width: 22px;
+            height: 22px;
+            filter: drop-shadow(0 0 5px rgba(0, 172, 238, 0.5));
+            transition: transform 0.3s ease;
+        }
+
+        .social-button:hover img {
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        .header-content {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif; 
+            font-size: 48px;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(157, 0, 255, 0.5);
+            margin-top:4px;   
+        }
+
+        .subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            color: #888;
+            margin-top: 10px;
+            font-style: italic;
+            letter-spacing: 1px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            border: 2px solid var(--neon-purple);
+            box-shadow: 0 0 15px rgba(157, 0, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(157, 0, 255, 0.5);
+        }
+
+        .market-timer-title {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .countdown {
+            display: flex;
+            gap: 8px;
+            font-family: 'Segoe UI', monospace;
+            font-size: 20px;
+            color: var(--neon-purple);
+            text-shadow: 0 0 10px rgba(157, 0, 255, 0.5);
+        }
+
+        .countdown-segment {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 3px 6px;
+            border-radius: 5px;
+            border: 1px solid rgba(157, 0, 255, 0.2);
+        }
+
+        .countdown-number {
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .countdown-label {
+            font-size: 8px;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        .market-status {
+            margin-top: 3px;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .market-status.open {
+            background: rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+            border: 1px solid rgba(0, 255, 0, 0.3);
+        }
+
+        .market-status.closed {
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff0000;
+            border: 1px solid rgba(255, 0, 0, 0.3);
+        }
+
+        .market-status.pre-market {
+            background: rgba(0, 150, 255, 0.2);
+            color: #00a6ff;
+            border: 1px solid rgba(0, 150, 255, 0.3);
+        }
+
+        .market-status.after-hours {
+            background: rgba(255, 150, 0, 0.2);
+            color: #ffa500;
+            border: 1px solid rgba(255, 150, 0, 0.3);
+        }
+
+        /* Hide TradingView Copyright */
+        .tradingview-widget-copyright {
+            display: none !important;
+        }
+
+        .news-widget.calendar {
+            height: 600px;
+            width: 80%;
+            margin-right: 10%;  
+        }
+
+        .calendar-header {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            border-bottom: 1px solid var(--neon-purple);
+            position: sticky;
+            top: 80px;
+            z-index: 1000;
+        }
+
+        .calendar-legend {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.actual {
+            background: #00ff00;
+            box-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+        }
+
+        .legend-dot.forecast {
+            background: #00a6ff;
+            box-shadow: 0 0 5px rgba(0, 166, 255, 0.5);
+        }
+
+        .legend-dot.previous {
+            background: #888;
+            box-shadow: 0 0 5px rgba(136, 136, 136, 0.5);
+        }
+
+        .legend-text {
+            font-size: 12px;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="sidebar-widgets">
+            <!-- Market Indices -->
+            <div class="widget-container">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                    {
+                        "symbol": "AMEX:SPY",
+                        "width": "100%",
+                        "height": "100%",
+                        "locale": "en",
+                        "dateRange": "1D",
+                        "colorTheme": "dark",
+                        "isTransparent": true,
+                        "autosize": true,
+                        "largeChartUrl": ""
+                    }
+                    </script>
+                </div>
+            </div>
+
+            <div class="widget-container">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                    {
+                        "symbol": "NASDAQ:QQQ",
+                        "width": "100%",
+                        "height": "100%",
+                        "locale": "en",
+                        "dateRange": "1D",
+                        "colorTheme": "dark",
+                        "isTransparent": true,
+                        "autosize": true,
+                        "largeChartUrl": ""
+                    }
+                    </script>
+                </div>
+            </div>
+
+            <div class="widget-container">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                    {
+                        "symbol": "AMEX:DIA",
+                        "width": "100%",
+                        "height": "100%",
+                        "locale": "en",
+                        "dateRange": "1D",
+                        "colorTheme": "dark",
+                        "isTransparent": true,
+                        "autosize": true,
+                        "largeChartUrl": ""
+                    }
+                    </script>
+                </div>
+            </div>
+
+            <div class="widget-container">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                    {
+                        "symbol": "AMEX:IWM",
+                        "width": "100%",
+                        "height": "100%",
+                        "locale": "en",
+                        "dateRange": "1D",
+                        "colorTheme": "dark",
+                        "isTransparent": true,
+                        "autosize": true,
+                        "largeChartUrl": ""
+                    }
+                    </script>
+                </div>
+            </div>
+
+            <div class="widget-container">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                    {
+                        "symbol": "AMEX:XLE",
+                        "width": "100%",
+                        "height": "100%",
+                        "locale": "en",
+                        "dateRange": "1D",
+                        "colorTheme": "dark",
+                        "isTransparent": true,
+                        "autosize": true,
+                        "largeChartUrl": ""
+                    }
+                    </script>
+                </div>
+            </div>
+
+            
+            </div>
+
+            <!-- Commodities and Crypto -->
+            <div class="widget-container">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                    {
+                        "symbol": "CAPITALCOM:OIL_CRUDE",
+                        "width": "100%",
+                        "height": "100%",
+                        "locale": "en",
+                        "dateRange": "1D",
+                        "colorTheme": "dark",
+                        "isTransparent": true,
+                        "autosize": true,
+                        "largeChartUrl": ""
+                    }
+                    </script>
+                </div>
+            </div>
+
+            <div class="widget-container">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                    {
+                        "symbol": "OANDA:XAUUSD",
+                        "width": "100%",
+                        "height": "100%",
+                        "locale": "en",
+                        "dateRange": "1D",
+                        "colorTheme": "dark",
+                        "isTransparent": true,
+                        "autosize": true,
+                        "largeChartUrl": ""
+                    }
+                    </script>
+                </div>
+            </div>
+
+            <div class="widget-container">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                    {
+                        "symbol": "INDEX:BTCUSD",
+                        "width": "100%",
+                        "height": "100%",
+                        "locale": "en",
+                        "dateRange": "1D",
+                        "colorTheme": "dark",
+                        "isTransparent": true,
+                        "autosize": true,
+                        "largeChartUrl": ""
+                    }
+                    </script>
+                </div>
+            </div>
+
+            <div class="widget-container">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                    {
+                        "symbol": "COINBASE:ETHUSD",
+                        "width": "100%",
+                        "height": "100%",
+                        "locale": "en",
+                        "dateRange": "1D",
+                        "colorTheme": "dark",
+                        "isTransparent": true,
+                        "autosize": true,
+                        "largeChartUrl": ""
+                    }
+                    </script>
+                </div>
+            </div>
+
+            <div class="widget-container">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                    {
+                        "symbol": "COINBASE:SOLUSD",
+                        "width": "100%",
+                        "height": "100%",
+                        "locale": "en",
+                        "dateRange": "1D",
+                        "colorTheme": "dark",
+                        "isTransparent": true,
+                        "autosize": true,
+                        "largeChartUrl": ""
+                    }
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="breaking-news-header">
+            <div class="header-left">
+                <img src="./static/hippobeat.jpeg" alt="Hippopotamus Logo" class="logo">
+                <h1 class="dashboard-title">Hippopotamus<br>News</h1>
+            </div>
+            
+            <div class="header-center">
+                <div class="nav-buttons">
+                    <a href="index.html" class="nav-button">
+                        <span>📺</span>
+                        News Feed
+                    </a>
+                    <a href="trading.html" class="nav-button">
+                        <span>📊</span>
+                        Trading
+                    </a>
+                    <a href="news.html" class="nav-button active">
+                        <span>📅</span>
+                        Economic Calendar
+                    </a>
+                </div>
+            </div>
+
+            <div class="header-right">
+                <div class="market-timer">
+                    <div class="market-timer-title">Market Hours</div>
+                    <div class="countdown">
+                        <div class="countdown-segment">
+                            <span class="countdown-number" id="hours">00</span>
+                            <span class="countdown-label">Hours</span>
+                        </div>
+                        <div class="countdown-segment">
+                            <span class="countdown-number" id="minutes">00</span>
+                            <span class="countdown-label">Minutes</span>
+                        </div>
+                        <div class="countdown-segment">
+                            <span class="countdown-number" id="seconds">00</span>
+                            <span class="countdown-label">Seconds</span>
+                        </div>
+                    </div>
+                    <div class="market-status" id="marketStatus">Market Closed</div>
+                </div>
+                <a href="https://x.com/LmlyhNyr" target="_blank" class="social-button">
+                    <span style="font-family: Arial, sans-serif; font-weight: bold; font-size: 20px; margin-right: 8px;">𝕏</span>
+                    @LmlyhNyr
+                </a>
+            </div>
+        </div>
+
+        <div class="header-content">
+            <h1 class="main-title">Economic Calendar</h1>
+            <p class="subtitle">Global Market Events & Indicators</p>
+        </div>
+
+        <div class="news-grid">
+            <!-- Economic Calendar Widget -->
+            <div class="news-widget calendar">
+                <!-- TradingView Widget -->
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
+                    {
+                        "colorTheme": "dark",
+                        "isTransparent": true,
+                        "width": "100%",
+                        "height": "600",
+                        "locale": "en",
+                        "importanceFilter": "-1,0,1",
+                        "currencyFilter": "USD,EUR,ITL,NZD,CHF,AUD,FRF,JPY,ZAR,TRL,CAD,DEM,MXN,ESP,GBP",
+                        "countryFilter": "us,eu,it,nz,ch,au,fr,jp,za,tr,ca,de,mx,es,gb",
+                        "showHeaders": true,
+                        "showColumns": ["actual", "forecast", "previous"]
+                    }
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateMarketTimer() {
+            const now = new Date();
+            const preMarketStart = new Date();
+            const marketOpen = new Date();
+            const afterMarketStart = new Date();
+            const afterMarketEnd = new Date();
+            
+            // Set market phases
+            preMarketStart.setHours(11, 0, 0, 0);      // Pre-market: 11:00
+            marketOpen.setHours(16, 30, 0, 0);         // Regular market: 16:30
+            afterMarketStart.setHours(23, 0, 0, 0);    // After-market: 23:00
+            afterMarketEnd.setHours(3, 0, 0, 0);       // Market closes: 03:00
+
+            let target;
+            let status = '';
+            let statusClass = '';
+
+            // Determine current market phase and set target time
+            if (now >= preMarketStart && now < marketOpen) {
+                // Pre-market
+                target = marketOpen;
+                status = 'Pre-Market';
+                statusClass = 'pre-market';
+            } else if (now >= marketOpen && now < afterMarketStart) {
+                // Regular market
+                target = afterMarketStart;
+                status = 'Market Open';
+                statusClass = 'open';
+            } else if ((now >= afterMarketStart && now < afterMarketEnd) || 
+                      (now >= afterMarketEnd && now.getHours() < 3)) {
+                // After-market
+                target = afterMarketEnd;
+                if (target <= now) {
+                    target.setDate(target.getDate() + 1);
+                }
+                status = 'After Hours';
+                statusClass = 'after-hours';
+            } else {
+                // Market closed
+                target = preMarketStart;
+                if (target <= now) {
+                    target.setDate(target.getDate() + 1);
+                }
+                status = 'Market Closed';
+                statusClass = 'closed';
+            }
+
+            const diff = target - now;
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+
+            const statusElement = document.getElementById('marketStatus');
+            statusElement.textContent = status;
+            statusElement.className = `market-status ${statusClass}`;
+        }
+
+        // Update timer every second
+        setInterval(updateMarketTimer, 1000);
+        updateMarketTimer(); // Initial update
+    </script>
+</body>
+</html> 

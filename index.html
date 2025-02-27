@@ -8,6 +8,8 @@
         :root {
             --dark-bg: #0a0a0a;
             --card-bg: #1a1a1a;
+            --neon-purple: #9d00ff;
+            --neon-blue: #00f3ff;
         }
 
         body {
@@ -21,15 +23,16 @@
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 20px;
-            margin-top: 45px;
-            margin-right: 120px;
+            padding: 30px;
+            margin-top: 1px;
+            margin-right: 370px;
         }
 
         .videos-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 25px;
+            margin-top: 110px;
             margin-bottom: 40px;
         }
 
@@ -80,17 +83,12 @@
             top: 0;
             right: 0;
             bottom: 0;
-            width: 120px;
-            background: rgba(10, 10, 10, 0.95);
-            padding: 15px 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            backdrop-filter: blur(5px);
-            border-left: 1px solid var(--neon-purple);
-            z-index: 1000;
+            width: 380px;
+            background: rgba(0, 0, 0, 0.95);
+            border-left: 2px solid var(--neon-purple);
             overflow-y: auto;
-            padding-top: 0;
+            padding: 0;
+            z-index: 1000;
         }
 
         .video-controls-group {
@@ -125,66 +123,102 @@
 
         /* עדכון סגנון המתגים */
         .toggle-btn {
-            position: relative;
             width: 40px;
-            height: 20px;
-            background: #333;
-            border-radius: 20px;
-            padding: 0;
-            border: none;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--neon-purple);
+            background: rgba(0, 0, 0, 0.7);
             cursor: pointer;
+            position: relative;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
             overflow: hidden;
+        }
+
+        .toggle-btn:hover {
+            transform: scale(1.1);
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+        }
+
+        .toggle-btn:active {
+            transform: scale(0.95);
+        }
+
+        .toggle-btn.play {
+            background-image: url('./static/play-button.png');
+            background-size: 60%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .toggle-btn.volume {
+            background-image: url('./static/volume.png');
+            background-size: 60%;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         .toggle-btn::before {
             content: '';
             position: absolute;
-            width: 16px;
-            height: 16px;
-            background: white;
-            border-radius: 50%;
-            top: 2px;
-            left: 2px;
-            transition: all 0.3s ease;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(157, 0, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
         }
 
-        /* מתג הפעלה */
-        .toggle-btn.play {
-            background: #333;
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+        .toggle-btn:hover::before {
+            left: 100%;
         }
 
-        .toggle-btn.play.muted {
-            background: var(--neon-purple);
-            box-shadow: 0 0 10px var(--neon-purple);
+        .toggle-btn.active {
+            background-color: rgba(157, 0, 255, 0.3);
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
         }
 
-        .toggle-btn.play.muted::before {
-            left: 22px;
-            background: #fff;
-        }
-
-        /* מתג ווליום */
-        .toggle-btn.volume {
-            background: #333;
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
-        }
-
-        .toggle-btn.volume.muted {
-            background: #00ff00;
-            box-shadow: 0 0 10px #00ff00;
-        }
-
-        .toggle-btn.volume.muted::before {
-            left: 22px;
-            background: #fff;
-        }
-
-        /* הסרת האייקונים */
+        /* הסרת האייקונים הישנים */
         .toggle-btn.play::after,
-        .toggle-btn.volume::after {
+        .toggle-btn.volume::after,
+        .toggle-btn.play::before,
+        .toggle-btn.volume::before {
             content: none;
+        }
+
+        /* עדכון הטולטיפ */
+        .toggle-btn[data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            left: 120%;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            border: 1px solid var(--neon-purple);
+            box-shadow: 0 0 10px rgba(157, 0, 255, 0.2);
+            z-index: 1100;
+        }
+
+        .toggle-btn[data-tooltip]:hover::after {
+            opacity: 1;
         }
 
         /* אנימציית ניאון למסך */
@@ -209,8 +243,8 @@
         /* סידור הכפתורים בשורה */
         .buttons-container {
             display: flex;
-            gap: 8px;
-            justify-content: center;
+            gap: 15px;
+            margin-top: 5px;
         }
 
         /* הסרת הסגנונות המיותרים */
@@ -241,7 +275,7 @@
         }
 
         .logo:hover {
-            transform: scale(1.05);
+            transform: scale(1.5);
             box-shadow: 0 0 20px rgba(157, 0, 255, 0.5);
         }
 
@@ -343,7 +377,7 @@
 
         /* הוספת אייקונים לכפתורים */
         .toggle-btn.play::before {
-            content: '▶';
+            content: '';
             position: absolute;
             left: 50%;
             top: 50%;
@@ -353,7 +387,7 @@
         }
 
         .toggle-btn.volume::before {
-            content: '🔊';
+            content: '';
             position: absolute;
             left: 50%;
             top: 50%;
@@ -367,81 +401,257 @@
         /* סגנונות לכותרת ראשית */
         .breaking-news-header {
             text-align: center;
-            padding: 30px 0;
-            margin-bottom: 40px;
-            border-bottom: 2px solid rgba(157, 0, 255, 0.3);
+            padding: 15px 15px;
+            background: rgba(0, 0, 0, 0.95);
+            border-bottom: 2px solid var(--neon-purple);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            z-index: 1001;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .main-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 42px;
-            font-weight: 900;
-            color: white;
-            margin: 0;
-            letter-spacing: -1px;
-            text-transform: uppercase;
-            text-shadow: 2px 2px 4px rgba(157, 0, 255, 0.3);
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
         }
 
-        .subtitle {
-            font-family: 'Playfair Display', serif;
+        .logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            border: 2px solid var(--neon-purple);
+            box-shadow: 0 0 15px rgba(157, 0, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(157, 0, 255, 0.5);
+        }
+
+        .dashboard-title {
             font-size: 18px;
-            color: #888;
-            margin-top: 10px;
-            font-style: italic;
-            letter-spacing: 1px;
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(157, 0, 255, 0.3);
         }
 
-        .news-date {
-            font-family: 'Segoe UI', sans-serif;
-            font-size: 14px;
-            color: var(--neon-purple);
-            margin-top: 15px;
-            letter-spacing: 2px;
-        }
-
-        /* עדכון המרווח העליון של הקונטיינר */
-        .container {
-            margin-top: 20px;
+        .header-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            min-width: 400px;
         }
 
         .nav-buttons {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin: 15px 0;
-            width: 100%;
+            gap: 20px;
+            justify-content: center;
         }
 
         .nav-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.3);
+            min-width: 120px;
+            padding: 12px 24px;
+            background: rgba(0, 0, 0, 0.7);
             border: 1px solid rgba(157, 0, 255, 0.3);
-            border-radius: 8px;
+            border-radius: 12px;
             color: white;
             text-decoration: none;
             font-size: 14px;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(5px);
+        }
+
+        .nav-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(157, 0, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .nav-button:hover:before {
+            left: 100%;
         }
 
         .nav-button:hover {
-            background: rgba(157, 0, 255, 0.2);
             border-color: var(--neon-purple);
+            box-shadow: 0 0 20px rgba(157, 0, 255, 0.3);
             transform: translateY(-2px);
+            background: rgba(157, 0, 255, 0.1);
         }
 
         .nav-button.active {
-            background: var(--neon-purple);
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 15px rgba(157, 0, 255, 0.4);
+            background: rgba(157, 0, 255, 0.2);
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 15px rgba(157, 0, 255, 0.5);
         }
 
         .nav-button span {
+            font-size: 18px;
+            text-shadow: 0 0 10px rgba(157, 0, 255, 0.5);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .social-button {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            background: rgba(0, 172, 238, 0.1);
+            border: 1px solid rgba(0, 172, 238, 0.3);
+            border-radius: 12px;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            min-width: 140px;
+            justify-content: center;
+        }
+
+        .social-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(0, 172, 238, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        .social-button:hover {
+            background: rgba(0, 172, 238, 0.2);
+            border-color: rgba(0, 172, 238, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(0, 172, 238, 0.4);
+        }
+
+        .social-button img {
+            width: 22px;
+            height: 22px;
+            filter: drop-shadow(0 0 5px rgba(0, 172, 238, 0.5));
+            transition: transform 0.3s ease;
+        }
+
+        .social-button:hover img {
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        /* סגנונות לשעון ספירה לאחור */
+        .market-timer {
+            position: static;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 1px solid rgba(157, 0, 255, 0.3);
+            width: 180px;
+        }
+
+        .market-timer-title {
+            font-size: 10px;
+            color: #888;
+            margin-bottom: 3px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .countdown {
+            display: flex;
+            gap: 6px;
+            font-family: 'Segoe UI', monospace;
             font-size: 16px;
+            color: var(--neon-purple);
+            text-shadow: 0 0 10px rgba(157, 0, 255, 0.5);
+        }
+
+        .countdown-segment {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 2px 4px;
+            border-radius: 5px;
+            border: 1px solid rgba(157, 0, 255, 0.2);
+        }
+
+        .countdown-number {
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .countdown-label {
+            font-size: 7px;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        .market-status {
+            margin-top: 2px;
+            font-size: 9px;
+            padding: 1px 4px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .market-status.open {
+            background: rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+            border: 1px solid rgba(0, 255, 0, 0.3);
+        }
+
+        .market-status.closed {
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff0000;
+            border: 1px solid rgba(255, 0, 0, 0.3);
         }
     </style>
 </head>
@@ -449,21 +659,7 @@
     <div class="navbar">
         <div class="sidebar-header">
             <img src="./static/hippo Small.jpeg" alt="Hippopotamus Logo" class="logo">
-            <h1 class="dashboard-title">Hippopotamus<br>Dashboard</h1>
-            <div class="nav-buttons">
-                <a href="index.html" class="nav-button active">
-                    <span>📺</span>
-                    News Feed
-                </a>
-                <a href="trading.html" class="nav-button">
-                    <span>📊</span>
-                    Trading
-                </a>
-            </div>
-            <a href="https://x.com/LmlyhNyr" target="_blank" class="social-button">
-                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJ3aGl0ZSIgZD0iTTE4LjI0NCA1LjIyOGMuMTk1LS4xOTUuNTEyLS4xOTUuNzA3IDBsNy4wNzEgNy4wNzFjLjE5NS4xOTUuMTk1LjUxMiAwIC43MDdsLTcuMDcxIDcuMDcxYy0uMTk1LjE5NS0uNTEyLjE5NS0uNzA3IDAtLjE5NS0uMTk1LS4xOTUtLjUxMiAwLS43MDdMNjguMjkzIDEyIDYxLjIyMiA0LjkyOWMtLjE5NS0uMTk1LS4xOTUtLjUxMiAwLS43MDd6Ii8+PC9zdmc+" alt="X Logo">
-                @LmlyhNyr
-            </a>
+        
         </div>
         <div class="video-controls-group">
             <img class="video-thumbnail" src="https://img.youtube.com/vi/xLep9rUAvaI/default.jpg" alt="Video 1">
@@ -489,54 +685,87 @@
         <div class="video-controls-group">
             <img class="video-thumbnail" src="https://img.youtube.com/vi/f39oHo6vFLg/default.jpg" alt="Video 5">
             <div class="buttons-container">
-                <button class="toggle-btn play" onclick="toggleVideo(3)" data-tooltip="הפעלה/עצירת סרטון"></button>
-                <button class="toggle-btn volume" onclick="toggleVolume(3)" data-tooltip="השתקה/הפעלת סאונד"></button>
+                <button class="toggle-btn play" onclick="toggleVideo(3)" data-tooltip="vol/play"></button>
+                <button class="toggle-btn volume" onclick="toggleVolume(3)" data-tooltip="vol/mute"></button>
             </div>
         </div>
         <div class="video-controls-group">
             <img class="video-thumbnail" src="https://img.youtube.com/vi/EK76hBAOMEk/default.jpg" alt="Video 6">
             <div class="buttons-container">
-                <button class="toggle-btn play" onclick="toggleVideo(4)" data-tooltip="הפעלה/עצירת סרטון"></button>
-                <button class="toggle-btn volume" onclick="toggleVolume(4)" data-tooltip="השתקה/הפעלת סאונד"></button>
+                <button class="toggle-btn play" onclick="toggleVideo(4)" data-tooltip="vol/play"></button>
+                <button class="toggle-btn volume" onclick="toggleVolume(4)" data-tooltip="vol/mute"></button>
             </div>
         </div>
         <div class="video-controls-group">
             <img class="video-thumbnail" src="https://img.youtube.com/vi/OlUMDZchivQ/default.jpg" alt="Video 7">
             <div class="buttons-container">
-                <button class="toggle-btn play" onclick="toggleVideo(5)" data-tooltip="הפעלה/עצירת סרטון"></button>
-                <button class="toggle-btn volume" onclick="toggleVolume(5)" data-tooltip="השתקה/הפעלת סאונד"></button>
+                <button class="toggle-btn play" onclick="toggleVideo(5)" data-tooltip="vol/play"></button>
+                <button class="toggle-btn volume" onclick="toggleVolume(5)" data-tooltip="vol/mute"></button>
             </div>
         </div>
         <div class="video-controls-group">
             <img class="video-thumbnail" src="https://img.youtube.com/vi/CG2XDTgvZPo/default.jpg" alt="Video 8">
             <div class="buttons-container">
-                <button class="toggle-btn play" onclick="toggleVideo(6)" data-tooltip="הפעלה/עצירת סרטון"></button>
-                <button class="toggle-btn volume" onclick="toggleVolume(6)" data-tooltip="השתקה/הפעלת סאונד"></button>
+                <button class="toggle-btn play" onclick="toggleVideo(6)" data-tooltip="vol/play"></button>
+                <button class="toggle-btn volume" onclick="toggleVolume(6)" data-tooltip="vol/mute"></button>
             </div>
         </div>
         <div class="video-controls-group">
             <img class="video-thumbnail" src="https://img.youtube.com/vi/pykpO5kQJ98/default.jpg" alt="Video 9">
             <div class="buttons-container">
-                <button class="toggle-btn play" onclick="toggleVideo(7)" data-tooltip="הפעלה/עצירת סרטון"></button>
-                <button class="toggle-btn volume" onclick="toggleVolume(7)" data-tooltip="השתקה/הפעלת סאונד"></button>
+                <button class="toggle-btn play" onclick="toggleVideo(7)" data-tooltip="vol/play"></button>
+                    <button class="toggle-btn volume" onclick="toggleVolume(7)" data-tooltip="vol/mute"></button>
             </div>
         </div>
     </div>
 
     <div class="container">
         <div class="breaking-news-header">
-            <h1 class="main-title">Breaking News</h1>
-            <p class="subtitle">Live Coverage of Global Events</p>
-            <div class="news-date">
-                <script>
-                    const date = new Date();
-                    document.write(date.toLocaleDateString('en-US', { 
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                    }));
-                </script>
+            <div class="header-left">
+                <img src="./static/hippobeat.jpeg" alt="Hippopotamus Logo" class="logo">
+                <h1 class="dashboard-title">Hippopotamus<br>News</h1>
+            </div>
+            
+            <div class="header-center">
+                <div class="nav-buttons">
+                    <a href="index.html" class="nav-button active">
+                        <span>📺</span>
+                        Finance Live 24/7  
+                    </a>
+                    <a href="trading.html" class="nav-button">
+                        <span>📊</span>
+                        Trading Analysis
+                    </a>
+                    <a href="news.html" class="nav-button">
+                        <span>📅</span>
+                        Economic Calendar
+                    </a>
+                </div>
+            </div>
+
+            <div class="header-right">
+                <div class="market-timer">
+                    <div class="market-timer-title">Market Hours</div>
+                    <div class="countdown">
+                        <div class="countdown-segment">
+                            <span class="countdown-number" id="hours">00</span>
+                            <span class="countdown-label">Hours</span>
+                        </div>
+                        <div class="countdown-segment">
+                            <span class="countdown-number" id="minutes">00</span>
+                            <span class="countdown-label">Minutes</span>
+                        </div>
+                        <div class="countdown-segment">
+                            <span class="countdown-number" id="seconds">00</span>
+                            <span class="countdown-label">Seconds</span>
+                        </div>
+                    </div>
+                    <div class="market-status" id="marketStatus">Market Closed</div>
+                </div>
+                <a href="https://x.com/LmlyhNyr" target="_blank" class="social-button">
+                    <span style="font-family: Arial, sans-serif; font-weight: bold; font-size: 20px; margin-right: 8px;">𝕏</span>
+                    @LmlyhNyr
+                </a>
             </div>
         </div>
         <div class="videos-grid">
@@ -622,132 +851,129 @@
     <script src="https://www.youtube.com/iframe_api"></script>
 
     <script>
-        // Initialize players array
+        // מערך לשמירת מצב הסרטונים
         let players = [];
-        let apiLoaded = false;
+        let isPlaying = Array(8).fill(false);
+        let isMuted = Array(8).fill(true);
 
-        // Load YouTube API
-        function loadYouTubeAPI() {
-            const tag = document.createElement('script');
-            tag.src = "https://www.youtube.com/iframe_api";
-            const firstScriptTag = document.getElementsByTagName('script')[0];
-            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-        }
+        // טעינת ה-YouTube API
+        let tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        let firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-        // Called automatically by YouTube API when it's ready
+        // פונקציה שנקראת כאשר ה-API מוכן
         function onYouTubeIframeAPIReady() {
-            apiLoaded = true;
-            console.log('YouTube API loaded');
-            initializePlayers();
-        }
-
-        function initializePlayers() {
-            if (!apiLoaded) {
-                console.warn('YouTube API not loaded yet');
-                return;
-            }
-
-            const videoContainers = document.querySelectorAll('.video-container');
-            videoContainers.forEach((container, index) => {
-                const iframe = container.querySelector('iframe');
-                if (!iframe) return;
-
-                // Extract video ID from iframe src
-                const videoId = iframe.src.split('/').pop().split('?')[0];
-                
-                // Create new player
-                players[index] = new YT.Player(iframe, {
-                    videoId: videoId,
+            // יצירת נגן עבור כל סרטון
+            for(let i = 0; i < 8; i++) {
+                players[i] = new YT.Player('player' + i, {
                     events: {
-                        'onReady': (event) => {
-                            console.log(`Player ${index} ready`);
+                        'onReady': function(event) {
+                            // הפעלה אוטומטית של כל הסרטונים בטעינת הדף
                             event.target.playVideo();
                             event.target.mute();
-                        },
-                        'onStateChange': (event) => {
-                            if (event.data === YT.PlayerState.ENDED) {
-                                event.target.playVideo();
-                            }
+                            isPlaying[i] = true;
+                            isMuted[i] = true;
+                            updateButtonStates(i);
                         }
                     }
                 });
-            });
+            }
         }
 
+        // פונקציה להפעלה/עצירה של סרטון
         function toggleVideo(index) {
-            if (!players[index] || !players[index].getPlayerState) {
-                console.warn('Player not ready:', index);
-                return;
+            if (!players[index]) return;
+            
+            if (isPlaying[index]) {
+                players[index].pauseVideo();
+                isPlaying[index] = false;
+            } else {
+                players[index].playVideo();
+                isPlaying[index] = true;
             }
-
-            try {
-                const state = players[index].getPlayerState();
-                const button = document.querySelectorAll('.toggle-btn.play')[index];
-                const videoContainer = document.querySelectorAll('.video-container')[index];
-
-                if (state === YT.PlayerState.PLAYING) {
-                    players[index].pauseVideo();
-                    button.classList.remove('muted');
-                } else {
-                    players[index].playVideo();
-                    button.classList.add('muted');
-                    videoContainer.classList.add('active');
-                    
-                    setTimeout(() => {
-                        videoContainer.classList.remove('active');
-                    }, 3000);
-                }
-            } catch (error) {
-                console.error('Error toggling video:', error);
-            }
+            updateButtonStates(index);
         }
 
+        // פונקציה להשתקה/הפעלת סאונד
         function toggleVolume(index) {
-            if (!players[index]) {
-                console.warn('Player not ready:', index);
-                return;
+            if (!players[index]) return;
+            
+            if (isMuted[index]) {
+                players[index].unMute();
+                isMuted[index] = false;
+            } else {
+                players[index].mute();
+                isMuted[index] = true;
             }
+            updateButtonStates(index);
+        }
 
-            try {
-                const volumeButton = document.querySelectorAll('.toggle-btn.volume')[index];
-                
-                if (players[index].isMuted()) {
-                    players[index].unMute();
-                    volumeButton.classList.remove('muted');
-                } else {
-                    players[index].mute();
-                    volumeButton.classList.add('muted');
-                }
-            } catch (error) {
-                console.error('Error toggling volume:', error);
+        // עדכון מצב הכפתורים
+        function updateButtonStates(index) {
+            const playBtn = document.querySelector(`[onclick="toggleVideo(${index})"]`);
+            const volumeBtn = document.querySelector(`[onclick="toggleVolume(${index})"]`);
+            
+            if (playBtn) {
+                playBtn.classList.toggle('active', isPlaying[index]);
+            }
+            if (volumeBtn) {
+                volumeBtn.classList.toggle('active', !isMuted[index]);
             }
         }
 
-        // Check and restart videos every 5 seconds
-        function checkAndRestartVideos() {
-            players.forEach((player, index) => {
-                if (player && player.getPlayerState) {
-                    try {
-                        const state = player.getPlayerState();
-                        if (state === YT.PlayerState.ENDED) {
-                            player.playVideo();
-                        }
-                    } catch (error) {
-                        console.warn(`Error checking video ${index}:`, error);
-                    }
-                }
-            });
+        // הפעלת טיימר השוק
+        function updateMarketTimer() {
+            const now = new Date();
+            const marketOpen = new Date();
+            marketOpen.setHours(16, 30, 0, 0);
+            
+            const marketClose = new Date();
+            marketClose.setHours(23, 0, 0, 0);
+            
+            let target;
+            let status = '';
+            let statusClass = '';
+            
+            if (now < marketOpen) {
+                target = marketOpen;
+                status = 'Pre-Market';
+                statusClass = 'pre-market';
+            } else if (now >= marketOpen && now < marketClose) {
+                target = marketClose;
+                status = 'Market Open';
+                statusClass = 'open';
+            } else {
+                target = new Date(marketOpen);
+                target.setDate(target.getDate() + 1);
+                status = 'Market Closed';
+                statusClass = 'closed';
+            }
+            
+            const diff = target - now;
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            
+            const statusElement = document.getElementById('marketStatus');
+            statusElement.textContent = status;
+            statusElement.className = `market-status ${statusClass}`;
         }
 
-        // Start checking videos only after API is loaded
-        let checkInterval = null;
-        function startVideoCheck() {
-            if (checkInterval) return;
-            checkInterval = setInterval(checkAndRestartVideos, 5000);
-        }
+        // עדכון הטיימר כל שנייה
+        setInterval(updateMarketTimer, 1000);
+        updateMarketTimer();
 
-        // Load YouTube API when page loads
-        document.addEventListener('DOMContentLoaded', loadYouTubeAPI);
+        // הפעלת כל הסרטונים בטעינת הדף
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof YT !== 'undefined' && YT.Player) {
+                onYouTubeIframeAPIReady();
+            }
+        });
     </script>
 </body>
 </html>
