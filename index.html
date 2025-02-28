@@ -244,6 +244,7 @@
             z-index: 1;
             display: flex;
             align-items: center;
+            width: 100%;
             justify-content: center;
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
@@ -260,7 +261,7 @@
 
         .pairs-wrapper {
             width: 100%;
-            max-width: 1400px;
+            max-width: 2000px;
             margin: 0 auto;
             padding: 0 20px;
         }
@@ -382,14 +383,95 @@
             overflow: hidden;
         }
 
-        .toggle-btn:hover {
-            transform: scale(1.1);
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+        /* אפקט לחיצה על הכפתורים */
+        .toggle-btn::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle, rgba(255, 255, 255, 0.4) 10%, transparent 10.01%);
+            background-repeat: no-repeat;
+            background-position: 50%;
+            transform: scale(10, 10);
+            opacity: 0;
+            transition: transform 0.5s, opacity 1s;
         }
 
+        .toggle-btn:active::after {
+            transform: scale(0, 0);
+            opacity: 0.3;
+            transition: 0s;
+        }
+
+        /* אפקט ניאון בלחיצה */
         .toggle-btn:active {
             transform: scale(0.95);
+            border-color: #00ff00;
+            box-shadow: 
+                0 0 5px #00ff00,
+                0 0 10px #00ff00,
+                0 0 20px #00ff00;
+            animation: button-press 0.3s ease-out;
+        }
+
+        @keyframes button-press {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 
+                    0 0 5px #00ff00,
+                    0 0 10px #00ff00,
+                    0 0 20px #00ff00;
+            }
+            50% {
+                transform: scale(0.97);
+                box-shadow: 
+                    0 0 10px #00ff00,
+                    0 0 20px #00ff00,
+                    0 0 30px #00ff00;
+            }
+            100% {
+                transform: scale(0.95);
+                box-shadow: 
+                    0 0 5px #00ff00,
+                    0 0 10px #00ff00,
+                    0 0 20px #00ff00;
+            }
+        }
+
+        /* אפקטים ספציפיים לכל כפתור */
+        .toggle-btn.play:active {
+            border-color: #00ff00;
+            box-shadow: 
+                0 0 5px #00ff00,
+                0 0 10px #00ff00,
+                0 0 20px #00ff00;
+        }
+
+        .toggle-btn.volume:active {
+            border-color: #00ffff;
+            box-shadow: 
+                0 0 5px #00ffff,
+                0 0 10px #00ffff,
+                0 0 20px #00ffff;
+        }
+
+        .toggle-btn.fullscreen:active {
+            border-color: #ff00ff;
+            box-shadow: 
+                0 0 5px #ff00ff,
+                0 0 10px #ff00ff,
+                0 0 20px #ff00ff;
+        }
+
+        .toggle-btn.live:active {
+            border-color: #ff0000;
+            box-shadow: 
+                0 0 5px #ff0000,
+                0 0 10px #ff0000,
+                0 0 20px #ff0000;
         }
 
         .toggle-btn.play {
@@ -811,20 +893,62 @@
             background-repeat: no-repeat;
         }
 
-        /* סגנון מיוחד למסך ראשון */
-        .video-pair-container:first-child .video-container {
+        /* סגנון מיוחד למסך ראשון ושני */
+        .video-pair-container:first-child .video-container,
+        .video-pair-container:nth-child(2) .video-container {
             cursor: default;
         }
 
         /* סגנון לשאר המסכים */
-        .video-pair-container:not(:first-child) .video-container {
+        .video-pair-container:not(:first-child):not(:nth-child(2)) .video-container {
             cursor: pointer;
         }
 
-        /* מניעת הופעת הטקסט והאפקטים במסך ראשון */
+        /* מניעת הופעת הטקסט והאפקטים במסך ראשון ושני */
         .video-pair-container:first-child .video-container::before,
-        .video-pair-container:first-child .video-container::after {
+        .video-pair-container:first-child .video-container::after,
+        .video-pair-container:nth-child(2) .video-container::before,
+        .video-pair-container:nth-child(2) .video-container::after {
             display: none;
+        }
+
+        /* אנימציית הבהוב לכפתור ווליום */
+        @keyframes neon-pulse {
+            0% {
+                box-shadow: 0 0 5px #00ff00,
+                           0 0 10px #00ff00,
+                           0 0 15px #00ff00;
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 10px #00ff00,
+                           0 0 20px #00ff00,
+                           0 0 30px #00ff00;
+                transform: scale(1.1);
+            }
+            100% {
+                box-shadow: 0 0 5px #00ff00,
+                           0 0 10px #00ff00,
+                           0 0 15px #00ff00;
+                transform: scale(1);
+            }
+        }
+
+        .volume-pulse {
+            position: relative;
+            animation: neon-pulse 1.5s infinite;
+            border-color: #00ff00 !important;
+            z-index: 1;
+        }
+
+        /* עדכון ה-z-index של הכפתורים */
+        .buttons-container {
+            position: relative;
+            z-index: 1000;
+        }
+
+        .toggle-btn {
+            z-index: 1000;
         }
     </style>
 </head>
@@ -1019,23 +1143,24 @@
             <div class="video-pair-container">
             <div class="video-container">
                 <iframe 
-                    id="player0"
-                    src="https://www.youtube.com/embed/xLep9rUAvaI?enablejsapi=1" 
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen>
-                </iframe>
+                id="player7"
+                src="https://www.youtube.com/embed/pykpO5kQJ98?enablejsapi=1"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen>
+            </iframe>
             </div>
-                <div class="video-controls-group">
-                    <img class="video-thumbnail" src="https://img.youtube.com/vi/xLep9rUAvaI/default.jpg" alt="Video 1">
-                    <div class="buttons-container">
-                        <button class="toggle-btn play" onclick="toggleVideo(this.closest('.video-pair-container'))" data-tooltip="הפעלה/עצירת סרטון"></button>
-                        <button class="toggle-btn volume" onclick="toggleVolume(this.closest('.video-pair-container'))" data-tooltip="השתקה/הפעלת סאונד"></button>
-                        <button class="toggle-btn fullscreen" onclick="toggleFullscreen(this.closest('.video-pair-container'))" data-tooltip="מסך מלא"></button>
-                        <button class="toggle-btn live" onclick="goLive(this.closest('.video-pair-container'))" data-tooltip="חזרה לשידור חי"></button>
-                    </div>
+            <div class="video-controls-group">
+                <img class="video-thumbnail" src="https://img.youtube.com/vi/pykpO5kQJ98/default.jpg" alt="Video 8">
+                <div class="buttons-container">
+                    <button class="toggle-btn play" onclick="toggleVideo(this.closest('.video-pair-container'))" data-tooltip="הפעלה/עצירת סרטון"></button>
+                    <button class="toggle-btn volume" onclick="toggleVolume(this.closest('.video-pair-container'))" data-tooltip="השתקה/הפעלת סאונד"></button>
+                    <button class="toggle-btn fullscreen" onclick="toggleFullscreen(this.closest('.video-pair-container'))" data-tooltip="מסך מלא"></button>
+                    <button class="toggle-btn live" onclick="goLive(this.closest('.video-pair-container'))" data-tooltip="חזרה לשידור חי"></button>
                 </div>
             </div>
+            </div>
+
 
             <div class="video-pair-container">
             <div class="video-container">
@@ -1155,36 +1280,14 @@
                 <div class="video-controls-group">
                     <img class="video-thumbnail" src="https://img.youtube.com/vi/OlUMDZchivQ/default.jpg" alt="Video 7">
                     <div class="buttons-container">
-                        <button class="toggle-btn play" onclick="toggleVideo(this.closest('.video-pair-container'))" data-tooltip="הפעלה/עצירת סרטון"></button>
-                        <button class="toggle-btn volume" onclick="toggleVolume(this.closest('.video-pair-container'))" data-tooltip="השתקה/הפעלת סאונד"></button>
-                        <button class="toggle-btn fullscreen" onclick="toggleFullscreen(this.closest('.video-pair-container'))" data-tooltip="מסך מלא"></button>
-                        <button class="toggle-btn live" onclick="goLive(this.closest('.video-pair-container'))" data-tooltip="חזרה לשידור חי"></button>
+                        <button class="toggle-btn play" onclick="toggleVideo(this.closest('.video-pair-container'))" data-tooltip="" ></button>
+                        <button class="toggle-btn volume" onclick="toggleVolume(this.closest('.video-pair-container'))" data-tooltip="" ></button>
+                        <button class="toggle-btn fullscreen" onclick="toggleFullscreen(this.closest('.video-pair-container'))" data-tooltip="" ></button>
+                        <button class="toggle-btn live" onclick="goLive(this.closest('.video-pair-container'))" data-tooltip=""></button>
                     </div>
                 </div>
             </div>
 
-            <div class="video-pair-container">
-            <div class="video-container">
-                <iframe 
-                    id="player7"
-                    src="https://www.youtube.com/embed/pykpO5kQJ98?enablejsapi=1"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen>
-                </iframe>
-                </div>
-                <div class="video-controls-group">
-                    <img class="video-thumbnail" src="https://img.youtube.com/vi/pykpO5kQJ98/default.jpg" alt="Video 8">
-                    <div class="buttons-container">
-                        <button class="toggle-btn play" onclick="toggleVideo(this.closest('.video-pair-container'))" data-tooltip="הפעלה/עצירת סרטון"></button>
-                        <button class="toggle-btn volume" onclick="toggleVolume(this.closest('.video-pair-container'))" data-tooltip="השתקה/הפעלת סאונד"></button>
-                        <button class="toggle-btn fullscreen" onclick="toggleFullscreen(this.closest('.video-pair-container'))" data-tooltip="מסך מלא"></button>
-                        <button class="toggle-btn live" onclick="goLive(this.closest('.video-pair-container'))" data-tooltip="חזרה לשידור חי"></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- הוספת ה-YouTube API -->
     <script src="https://www.youtube.com/iframe_api"></script>
@@ -1252,6 +1355,17 @@
             // מאתחלים מחדש את הנגנים
             setTimeout(() => {
                 onYouTubeIframeAPIReady();
+                
+                // מוסיף את אנימציית ההבהוב לכפתור הווליום של הסרטון הראשון
+                const firstVolumeBtn = firstContainer.querySelector('.toggle-btn.volume');
+                if (firstVolumeBtn) {
+                    firstVolumeBtn.classList.add('volume-pulse');
+                    
+                    // מסיר את האנימציה אחרי 7 שניות
+                    setTimeout(() => {
+                        firstVolumeBtn.classList.remove('volume-pulse');
+                    }, 10000);
+                }
                 
                 // אם זו החלפה ראשונה, נפעיל את הווליום במסך הראשון
                 if (!hasSwappedOnce) {

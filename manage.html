@@ -168,29 +168,200 @@
 
         .nav-buttons {
             display: flex;
-            justify-content: center;
             gap: 15px;
+            justify-content: center;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .nav-button {
+            flex: 1;
+            min-width: 120px;
+            max-width: 180px;
+            padding: 12px 20px;
             background: rgba(0, 0, 0, 0.7);
-            border: 1px solid var(--neon-purple);
-            padding: 10px 20px;
-            border-radius: 8px;
+            border: 1px solid rgba(157, 0, 255, 0.3);
+            border-radius: 12px;
             color: white;
             text-decoration: none;
+            font-size: 14px;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            backdrop-filter: blur(5px);
+            white-space: nowrap;
+        }
+
+        .nav-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(157, 0, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .nav-button:hover:before {
+            left: 100%;
         }
 
         .nav-button:hover {
-            background: rgba(157, 0, 255, 0.1);
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 20px rgba(157, 0, 255, 0.3);
             transform: translateY(-2px);
-            box-shadow: 0 0 15px rgba(157, 0, 255, 0.3);
+            background: rgba(157, 0, 255, 0.1);
         }
 
         .nav-button.active {
             background: rgba(157, 0, 255, 0.2);
-            border-color: var(--neon-blue);
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 15px rgba(157, 0, 255, 0.5);
+        }
+
+        .nav-button span {
+            font-size: 18px;
+            text-shadow: 0 0 10px rgba(157, 0, 255, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .nav-buttons {
+                flex-wrap: wrap;
+                gap: 8px;
+                padding: 0 5px;
+            }
+
+            .nav-button {
+                min-width: calc(50% - 10px);
+                font-size: 13px;
+                padding: 8px 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .nav-button {
+                width: 100%;
+                min-width: 100%;
+                margin-bottom: 5px;
+            }
+        }
+
+        .welcome-section {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            border: 1px solid var(--neon-purple);
+            box-shadow: 0 0 20px rgba(157, 0, 255, 0.3);
+        }
+
+        .welcome-section h1 {
+            color: white;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-align: center;
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(157, 0, 255, 0.3);
+        }
+
+        .welcome-text {
+            color: #fff;
+            font-size: 1.2em;
+            text-align: center;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .instructions {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .instructions h2 {
+            color: var(--neon-blue);
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .instructions ol {
+            color: #fff;
+            margin-left: 20px;
+            margin-bottom: 30px;
+        }
+
+        .instructions li {
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .features {
+            background: rgba(157, 0, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .features h3 {
+            color: var(--neon-purple);
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .features ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .features li {
+            color: #fff;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .features li strong {
+            color: var(--neon-blue);
+        }
+
+        @media (max-width: 768px) {
+            .welcome-section {
+                padding: 20px;
+                margin-bottom: 30px;
+            }
+
+            .welcome-section h1 {
+                font-size: 2em;
+            }
+
+            .welcome-text {
+                font-size: 1.1em;
+            }
+
+            .instructions {
+                padding: 15px;
+            }
         }
     </style>
 </head>
@@ -198,22 +369,61 @@
     <div class="header">
         <div class="nav-buttons">
             <a href="index.html" class="nav-button">
-                <span>📺</span> Finance Live 24/7
+                <span>📺</span>
+                Finance Live 24/7
+            </a>
+            <a href="trading.html" class="nav-button">
+                <span>📊</span>
+                Trading Analysis
+            </a>
+            <a href="market.html" class="nav-button">
+                <span>📈</span>
+                Market Overview
+            </a>
+            <a href="news.html" class="nav-button">
+                <span>📅</span>
+                Economic Calendar
             </a>
             <a href="manage.html" class="nav-button active">
-                <span>⚙️</span> Video Manager
+                <span>⚙️</span>
+                Video Manager
             </a>
         </div>
     </div>
 
     <div class="container">
+        <div class="welcome-section">
+            <h1>Welcome to Video Manager</h1>
+            <p class="welcome-text">Here you can manage your favorite financial YouTube channels and create your own personalized dashboard.</p>
+            
+            <div class="instructions">
+                <h2>How to Add Videos:</h2>
+                <ol>
+                    <li>Find a YouTube video you want to add</li>
+                    <li>Copy the video URL or ID (e.g., https://www.youtube.com/watch?v=VIDEO_ID or just VIDEO_ID)</li>
+                    <li>Paste it in the input field below</li>
+                    <li>Add a title for the video</li>
+                    <li>Click "Add Video" to save it</li>
+                </ol>
+                
+                <div class="features">
+                    <h3>Additional Features:</h3>
+                    <ul>
+                        <li>💾 <strong>Backup Videos</strong> - Save your video collection to a file</li>
+                        <li>📂 <strong>Restore Backup</strong> - Load previously saved video collection</li>
+                        <li>🗑️ <strong>Delete Videos</strong> - Remove videos you no longer want</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
         <div class="video-form">
             <div class="alert alert-success" id="successAlert">Video added successfully!</div>
-            <div class="alert alert-error" id="errorAlert">Error! Please check the embed code.</div>
+            <div class="alert alert-error" id="errorAlert">Error! Please enter a valid YouTube URL or video ID.</div>
             
             <div class="form-group">
-                <label>Paste YouTube Embed Code:</label>
-                <input type="text" id="embedCode" placeholder='<iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID" ...>' />
+                <label>Enter YouTube URL or Video ID:</label>
+                <input type="text" id="embedCode" placeholder="https://www.youtube.com/watch?v=VIDEO_ID or just VIDEO_ID" />
             </div>
             
             <div class="form-group">
@@ -222,6 +432,15 @@
             </div>
             
             <button class="btn" onclick="addVideo()">Add Video</button>
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button class="btn" onclick="backupVideos()" style="background: linear-gradient(45deg, #00aa00, #00ff00);">
+                    💾 Backup Videos
+                </button>
+                <button class="btn" onclick="document.getElementById('restoreFile').click()" style="background: linear-gradient(45deg, #0055aa, #0099ff);">
+                    📂 Restore Backup
+                </button>
+                <input type="file" id="restoreFile" accept=".json" style="display: none;" onchange="restoreVideos(event)" />
+            </div>
         </div>
 
         <div class="videos-grid" id="videosGrid">
@@ -230,25 +449,47 @@
     </div>
 
     <script>
+        // Function to extract video ID from various YouTube URL formats
+        function extractVideoId(input) {
+            // If input is already a video ID (11 characters)
+            if (input.length === 11) {
+                return input;
+            }
+
+            // Try to extract from URL
+            const patterns = [
+                /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\?\/]+)/,
+                /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/
+            ];
+
+            for (const pattern of patterns) {
+                const match = input.match(pattern);
+                if (match && match[1]) {
+                    return match[1];
+                }
+            }
+
+            return null;
+        }
+
         // Function to add new video
         function addVideo() {
-            const embedCode = document.getElementById('embedCode').value;
+            const input = document.getElementById('embedCode').value;
             const title = document.getElementById('videoTitle').value;
             
             // Input validation
-            if (!embedCode || !title) {
+            if (!input || !title) {
                 showAlert('error');
                 return;
             }
 
-            // Extract video ID from embed code
-            const videoIdMatch = embedCode.match(/embed\/([\w-]+)/);
-            if (!videoIdMatch) {
+            // Extract video ID
+            const videoId = extractVideoId(input);
+            if (!videoId) {
                 showAlert('error');
                 return;
             }
 
-            const videoId = videoIdMatch[1];
             const video = {
                 id: Date.now(),
                 videoId: videoId,
@@ -304,6 +545,44 @@
             `).join('');
         }
 
+        // Function to backup videos
+        function backupVideos() {
+            const videos = getVideos();
+            const dataStr = JSON.stringify(videos, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `hippopotamus_videos_backup_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showAlert('success');
+        }
+
+        // Function to restore videos from backup
+        function restoreVideos(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const videos = JSON.parse(e.target.result);
+                    localStorage.setItem('savedVideos', JSON.stringify(videos));
+                    displayVideos();
+                    showAlert('success');
+                } catch (error) {
+                    showAlert('error');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = ''; // Reset file input
+        }
+
         // Function to show alerts
         function showAlert(type) {
             const successAlert = document.getElementById('successAlert');
@@ -311,9 +590,11 @@
             
             if (type === 'success') {
                 successAlert.style.display = 'block';
+                successAlert.textContent = type === 'backup' ? 'Backup created successfully!' : 'Video added successfully!';
                 setTimeout(() => successAlert.style.display = 'none', 3000);
             } else {
                 errorAlert.style.display = 'block';
+                errorAlert.textContent = type === 'restore' ? 'Error restoring backup!' : 'Error! Please enter a valid YouTube URL or video ID.';
                 setTimeout(() => errorAlert.style.display = 'none', 3000);
             }
         }
