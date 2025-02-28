@@ -319,7 +319,15 @@
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
-                margin-top: 400px;
+                margin-top: 320px;
+            }
+
+            .navbar {
+                top: 165px;
+            }
+
+            .forex-crypto-navbar {
+                top: 215px;
             }
 
             .breaking-news-header {
@@ -327,80 +335,56 @@
                 padding: 15px;
                 flex-direction: column;
                 gap: 15px;
-                position: fixed;
-                top: 0;
-                z-index: 1002;
             }
 
-            .navbar {
-                top: 280px;
-            }
-
-            .forex-crypto-navbar {
-                top: 330px;
-            }
-
-            .market-widgets-grid {
-                margin-top: 100px;
-                grid-template-columns: 1fr;
-            }
-
-            .market-widget {
-                height: auto;
-                min-height: 500px;
-            }
-
-            .header-left, .header-center, .header-right {
+            .header-left {
                 width: 100%;
                 justify-content: center;
                 min-width: auto;
-                padding: 5px;
+            }
+
+            .header-center {
+                width: 100%;
+                padding: 0;
+            }
+
+            .header-right {
+                width: 100%;
+                justify-content: center;
+                min-width: auto;
+                flex-wrap: wrap;
             }
 
             .nav-buttons {
                 flex-wrap: wrap;
-                gap: 8px;
-                justify-content: center;
+                gap: 10px;
             }
 
             .nav-button {
-                min-width: calc(50% - 10px);
+                min-width: 45%;
                 font-size: 12px;
-                padding: 8px 12px;
+                padding: 10px 15px;
             }
 
-            .market-timer, .social-button {
+            .market-timer {
                 width: 100%;
                 max-width: 300px;
-                margin: 5px auto;
+            }
+
+            .social-button {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
             }
         }
 
         @media (max-width: 480px) {
             .container {
-                margin-top: 450px;
-                padding: 10px;
+                margin-top: 340px;
             }
 
             .nav-button {
                 min-width: 100%;
-                margin-bottom: 5px;
-            }
-
-            .navbar {
-                top: 330px;
-            }
-
-            .forex-crypto-navbar {
-                top: 380px;
-            }
-
-            .market-widgets-grid {
-                margin-top: 120px;
-            }
-
-            .pairs-wrapper {
-                padding: 0 5px;
             }
         }
 
