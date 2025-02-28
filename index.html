@@ -1193,7 +1193,7 @@
             if (playerInstance) {
                 if (playerInstance.getPlayerState() === YT.PlayerState.PLAYING) {
                     playerInstance.pauseVideo();
-                } else {
+            } else {
                     playerInstance.playVideo();
                 }
             }
@@ -1215,7 +1215,7 @@
                 if (playerInstance.isMuted()) {
                     playerInstance.unMute();
                     playerInstance.setVolume(100);
-                } else {
+                    } else {
                     playerInstance.mute();
                     playerInstance.setVolume(0);
                 }
